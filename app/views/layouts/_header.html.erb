@@ -1,28 +1,35 @@
 <header class="navbar navbar-expand-lg navbar-light">
-  <div class="container">
-  <%= link_to image_tag("buildings.png", alt: "Ukirama logo", width: "100"),root_path, id:"logo2" %>
+  <div class="container ">
+  <%= link_to image_tag("buildings.png", alt: "Ukirama logo", width: "100"), id:"logo2" %>
   <nav>
       <ul class="nav navbar-nav navbar-right">
-        <li><%= link_to "Dashboard",   root_path, id:"nav" %></li>
 
-        <li><%= link_to "Items", root_path, id:"nav" %></li>
+        <% if user_signed_in? %>
+        <li><%= link_to "Dashboard", items_path, id:"nav" %></li>
 
-        <li><%= link_to "Users", root_path, id:"nav" %></li>
+        <li><%= link_to "Items", items_path, id:"nav" %></li>
 
-        <li><%= link_to "Asset Loan", root_path, id:"nav" %></li>
+        <li><%= link_to "Users", users_path, id:"nav" %></li>
 
-        <li><%= link_to "Asset Return", root_path, id:"nav" %></li>
+        <li><%= link_to "Asset Loan", items_path, id:"nav" %></li>
+
+        <li><%= link_to "Asset Return", items_path, id:"nav" %></li>
 
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown nav" role="button" data-toggle="dropdown" >
-            Account
+            <%= current_user.email %>
           </a>
           <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-            <%= link_to "Settings", root_path, class:"dropdown-item" %>
+            <%= link_to "Settings", items_path, class:"dropdown-item" %>
             <div class="dropdown-divider"></div>
-            <%= link_to "Log out", root_path, method: :delete, class:"dropdown-item" %>
+            <%= link_to "Log out", destroy_user_session_path, method: :delete, class:"dropdown-item" %>
           </div>
         </li>
+
+        <% else %>
+          <li><%= link_to "Home",   root_path, id:"nav" %></li>
+          <li><%= link_to "Log in", new_user_session_path, id:"nav" %></li>
+        <% end %>
 
       </ul>
     </nav>

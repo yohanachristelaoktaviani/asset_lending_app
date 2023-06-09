@@ -1,4 +1,47 @@
 <% provide(:title, "Dashboard") %>
 
-<h1>Items#index</h1>
-<p>Find me in app/views/items/index.html.erb</p>
+<div class="form">
+<br>
+
+<h1>Items Index</h1>
+
+<table>
+  <tr>
+    <td><%= button_to "Create", new_item_path, method: 'get', class: "button2 btn btn-primary" %></td>
+    </tr>
+</table>
+
+<table class="table table-bordered table-striped table-hover w-100 center">
+  <thead class="thead">
+    <tr>
+      <th class="th">Item ID</th>
+      <th class="th">Name</th>
+      <th class="th">Merk</th>
+      <th class="th">Vendor Name</th>
+      <th class="th">Condition</th>
+      <th class="th">Status</th>
+      <th class="th">Description</th>
+      <th class="th">Image</th>
+    </tr>
+  </thead>
+  <tbody>
+  <% @items.each do |item| %>
+      <tr>
+          <td style="text-align:left"><%= link_to item.code, item_path(item) %></td>
+          <td><%= item.name %></td>
+          <td><%= item.merk %></td>
+          <td><%= item.vendor_name %></td>
+          <td><%= item.condition %></td>
+          <td><%= item.status %></td>
+          <td><%= item.description %></td>
+          <td><%= image_tag item.image %></td>
+      </tr>
+      <% end %>
+
+  </tbody>
+</table>
+
+
+<br>
+
+</div>

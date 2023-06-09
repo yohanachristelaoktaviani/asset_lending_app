@@ -1,0 +1,43 @@
+<% provide(:title, "Users") %>
+<div class="form">
+<br>
+
+
+<h1>Users Index</h1>
+
+<table>
+  <tr>
+    <td><%= button_to "Create", new_user_path, method: 'get', class: "button2 btn btn-primary" %></td>
+    </tr>
+</table>
+
+<table class="table table-bordered table-striped table-hover w-100 center">
+  <thead class="thead">
+    <tr>
+      <th class="th">Employee Id</th>
+      <th class="th">Name</th>
+      <th class="th">Email</th>
+      <th class="th">Department</th>
+      <th class="th">Position</th>
+      <th class="th">Role</th>
+    </tr>
+  </thead>
+  <tbody>
+  <% @users.each do |user| %>
+      <tr>
+          <td style="text-align:left"><%= link_to user.code, user_path(user) %></td>
+          <td><%= user.name %></td>
+          <td><%= user.email %></td>
+          <td><%= user.department.code_name %></td>
+          <td><%= user.position.code_name %></td>
+          <td><%= user.role %></td>
+      </tr>
+      <% end %>
+
+  </tbody>
+</table>
+
+
+<br>
+
+</div>

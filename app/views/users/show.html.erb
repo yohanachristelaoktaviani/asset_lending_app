@@ -1,0 +1,47 @@
+<% provide(:title, "User Detail") %>
+<br>
+
+<div class="form2">
+<h1 style="text-align:left" >User Detail</h1>
+<hr>
+<table>
+  <tr>
+    <td><%= button_to "Edit", edit_user_path, method: 'get', class: "button1 btn btn-outline-primary" %></td>
+    <td><%= button_to "Delete", user_path, method: 'delete',
+    data: { confirm: "Are you sure for delete this user?" }, class: "button3 btn btn-outline-danger" %></td>
+  </tr>
+</table>
+
+  <table class="table tablestat" style="width:100%">
+      <tr>
+        <th>Name</th>
+        <td>:</td>
+        <td><%= @user.name%></td>
+      </tr>
+      <tr>
+        <th>Employee ID</th>
+        <td>:</td>
+        <td><%= @user.code%></td>
+      </tr>
+      <tr>
+        <th>Email</th>
+        <td>:</td>
+        <td><%= @user.email%></td>
+      </tr>
+      <tr>
+        <th>Department</th>
+        <td>:</td>
+        <td><%= @user.department.code_name%></td>
+      </tr>
+      <tr>
+        <th>Position</th>
+        <td>:</td>
+        <td><%= @user.position.code_name%></td>
+      </tr>
+      <tr>
+        <th>Type</th>
+        <td>:</td>
+        <td><%= @user.role%></td>
+      </tr>
+  </table>
+</div>

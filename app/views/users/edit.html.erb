@@ -1,0 +1,39 @@
+<% provide(:title, "Edit User") %>
+
+<div class="form2">
+<div class="font-edit">
+<h2>Edit User</h2>
+</div>
+        <%= form_with(model: @user, local: true)do |f| %>
+        <div class="font-user">
+        <hr>
+          <p>
+          <%= f.label :code, class:"tlabel" %>
+          <%= f.text_field :code, disabled: true, class:"textbox2" %>
+          </p>
+          <p>
+          <%= f.label :name, class:"tlabel" %>
+          <%= f.text_field :name, class:"textbox2" %>
+          </p>
+          <p>
+          <%= f.label :email, class:"tlabel" %>
+          <%= f.text_field :email, class:"textbox2" %>
+          </p>
+          <p>
+          <%= f.label :department, class:"tlabel" %>
+          <%= f.select :department_id, @department.map { |m| [m.code_name, m.id]}, {}, class:"textbox2"  %>
+          </p>
+          <p>
+          <%= f.label :position, class:"tlabel" %>
+          <%= f.select :position_id, @position.map { |m| [m.code_name, m.id]}, {},  class:"textbox2"  %>
+          </p>
+          <p>
+          <%= f.label :role, class:"tlabel" %>
+          <%= f.select :role, ['admin', 'user'] %>
+          </p>
+          <p>
+          <%= f.submit "UPDATE", class: "button4 btn btn-secondary btn-lg" %>
+          </p>
+          <% end %>
+        </div>
+</div>
