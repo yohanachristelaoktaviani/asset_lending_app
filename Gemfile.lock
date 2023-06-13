@@ -59,6 +59,8 @@ GEM
       activesupport (= 6.1.7.3)
       marcel (~> 1.0)
       mini_mime (>= 1.1.0)
+    activestorage-validator (0.4.0)
+      rails (>= 6.1.0)
     activesupport (6.1.7.3)
       concurrent-ruby (~> 1.0, >= 1.0.2)
       i18n (>= 1.6, < 2)
@@ -119,6 +121,9 @@ GEM
       activesupport (>= 5.0)
     i18n (1.14.1)
       concurrent-ruby (~> 1.0)
+    image_processing (1.12.2)
+      mini_magick (>= 4.9.5, < 5)
+      ruby-vips (>= 2.0.17, < 3)
     importmap-rails (1.1.6)
       actionpack (>= 6.0.0)
       railties (>= 6.0.0)
@@ -156,6 +161,7 @@ GEM
     marcel (1.0.2)
     matrix (0.4.2)
     method_source (1.0.0)
+    mini_magick (4.9.5)
     mini_mime (1.1.2)
     minitest (5.18.0)
     msgpack (1.7.1)
@@ -224,6 +230,8 @@ GEM
       railties (>= 5.2)
     rexml (3.2.5)
     rouge (4.1.2)
+    ruby-vips (2.1.4)
+      ffi (~> 1.12)
     rubyzip (2.3.2)
     sass-rails (6.0.0)
       sassc-rails (~> 2.1, >= 2.1.1)
@@ -285,6 +293,7 @@ PLATFORMS
 
 DEPENDENCIES
   active_model_serializers
+  activestorage-validator
   bcrypt (~> 3.1.7)
   better_errors
   binding_of_caller
@@ -294,10 +303,12 @@ DEPENDENCIES
   capybara
   debug
   devise
+  image_processing (~> 1.2)
   importmap-rails
   jbuilder
   jquery-rails
   kaminari
+  mini_magick (~> 4.9.5)
   pg
   pry (~> 0.13.1)
   pry-byebug

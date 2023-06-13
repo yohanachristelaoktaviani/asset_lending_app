@@ -1,0 +1,75 @@
+<% provide(:title, "Item Detail") %>
+
+<h1>Item Detail</h1>
+
+<table>
+  <tr>
+    <td><%= button_to "Accepted", accept_asset_loans_item_path , method: 'post', class: "button2 btn btn-outline-success" %></td>
+    <td><%= button_to "Cancel", cancel_asset_loans_item_path , method: 'post', class: "button3 btn btn-outline-primary" %></td>
+    <td><%= button_to "Decline", decline_asset_loans_item_path , method: 'post', class: "button3 btn btn-outline-danger" %></td>
+    </tr>
+</table>
+
+
+<div class="container3">
+<div class="container4">
+<%= image_tag @loan_item.item_name.image, class:"imageee"%>
+</div>
+</div>
+
+
+<div class="container6">
+<h3 class="font-item"><%= @loan_item.asset_loan.code %></h3>
+  <table class="table tablestat" style="width:150%">
+      <tr>
+        <th>Item</th>
+        <td>:</td>
+        <td><%= @loan_item.item_name.name%></td>
+      </tr>
+      <tr>
+        <th>Item ID</th>
+        <td>:</td>
+        <td><%= @loan_item.item_name.code%></td>
+      </tr>
+      <tr>
+        <th>User</th>
+        <td>:</td>
+        <td><%= @loan_item.asset_loan.user.name%></td>
+      </tr>
+      <tr>
+        <th>Loan Date</th>
+        <td>:</td>
+        <td><%= @loan_item.asset_loan.loan_item_datetime%></td>
+      </tr>
+      <tr>
+        <th>Return Estimation Date</th>
+        <td>:</td>
+        <td><%= @loan_item.asset_loan.return_estimation_datetime%></td>
+      </tr>
+      <tr>
+        <th>Item Condition</th>
+        <td>:</td>
+        <td><%= @loan_item.item_condition.condition%></td>
+      </tr>
+      <tr>
+        <th>Necessary</th>
+        <td>:</td>
+        <td><%= @loan_item.asset_loan.necessary%></td>
+      </tr>
+      <tr>
+        <th>Admin</th>
+        <td>:</td>
+        <td><%= @loan_item.admin.name%></td>
+      </tr>
+      <tr>
+        <th>Loan Status</th>
+        <td>:</td>
+        <td><%= @loan_item.loan_status%></td>
+      </tr>
+      <tr>
+        <th>Evidence</th>
+        <td>:</td>
+        <td><%= @loan_item.evidence%></td>
+      </tr>
+  </table>
+</div>

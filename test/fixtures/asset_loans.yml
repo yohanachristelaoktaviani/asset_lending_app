@@ -1,0 +1,17 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  code: MyString
+  loan_item_datetime: 2023-06-12 10:00:28
+  return_estimation_datetime: 2023-06-12 10:00:28
+  necessary: MyString
+  loan_status: MyString
+  evidence: MyString
+
+two:
+  code: MyString
+  loan_item_datetime: 2023-06-12 10:00:28
+  return_estimation_datetime: 2023-06-12 10:00:28
+  necessary: MyString
+  loan_status: MyString
+  evidence: MyString

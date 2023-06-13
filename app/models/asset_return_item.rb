@@ -1,0 +1,2 @@
+class AssetReturnItem < ApplicationRecord
+end

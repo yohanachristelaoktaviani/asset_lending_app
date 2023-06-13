@@ -13,7 +13,7 @@
           </p>
           <p>
           <%= f.label :name, class:"tlabel" %>
-          <%= f.text_field :name, class:"textbox2" %>
+          <%= f.text_field :name,id: "name-field", onkeypress: "return /[a-zA-Z]/i.test(event.key)",  class:"textbox2" %>
           </p>
           <p>
           <%= f.label :email, class:"tlabel" %>

@@ -1,4 +1,7 @@
 class UsersController < ApplicationController
+
+  # layout :users_layout
+
   def new
     @department = Department.all
     @position = Position.all
@@ -52,8 +55,16 @@ class UsersController < ApplicationController
   end
 
 
+  private
+
   def user_params
     params.require(:user).permit(:code, :name, :email, :password, :password_confirmation, :department_id, :position_id, :role)
   end
+
+  def users_layout
+    @user.special? ? "special" : "items"
+  end
+
+  layout Proc.new { |controller| controller.request.xhr? ? "popup" : "application" }
 
 end

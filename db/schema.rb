@@ -10,10 +10,84 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_06_09_012608) do
+ActiveRecord::Schema.define(version: 2023_06_12_102753) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "active_storage_attachments", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "record_type", null: false
+    t.bigint "record_id", null: false
+    t.bigint "blob_id", null: false
+    t.datetime "created_at", null: false
+    t.index ["blob_id"], name: "index_active_storage_attachments_on_blob_id"
+    t.index ["record_type", "record_id", "name", "blob_id"], name: "index_active_storage_attachments_uniqueness", unique: true
+  end
+
+  create_table "active_storage_blobs", force: :cascade do |t|
+    t.string "key", null: false
+    t.string "filename", null: false
+    t.string "content_type"
+    t.text "metadata"
+    t.string "service_name", null: false
+    t.bigint "byte_size", null: false
+    t.string "checksum", null: false
+    t.datetime "created_at", null: false
+    t.index ["key"], name: "index_active_storage_blobs_on_key", unique: true
+  end
+
+  create_table "active_storage_variant_records", force: :cascade do |t|
+    t.bigint "blob_id", null: false
+    t.string "variation_digest", null: false
+    t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
+  end
+
+  create_table "asset_loan_items", force: :cascade do |t|
+    t.bigint "asset_loan_id", null: false
+    t.bigint "item_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.string "loan_status", limit: 50
+    t.string "evidence", limit: 100
+    t.bigint "admin_id"
+    t.index ["asset_loan_id"], name: "index_asset_loan_items_on_asset_loan_id"
+    t.index ["item_id"], name: "index_asset_loan_items_on_item_id"
+  end
+
+  create_table "asset_loans", force: :cascade do |t|
+    t.string "code", limit: 45
+    t.datetime "loan_item_datetime"
+    t.datetime "return_estimation_datetime"
+    t.string "necessary", limit: 200
+    t.integer "user_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["code"], name: "code_loan", unique: true
+    t.index ["code"], name: "index_asset_loans_on_code", unique: true
+  end
+
+  create_table "asset_return_items", force: :cascade do |t|
+    t.string "return_status", limit: 50
+    t.bigint "asset_return_id", null: false
+    t.bigint "item_id", null: false
+    t.string "actual_item_condition", limit: 50
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["asset_return_id"], name: "index_asset_return_items_on_asset_return_id"
+    t.index ["item_id"], name: "index_asset_return_items_on_item_id"
+  end
+
+  create_table "asset_returns", force: :cascade do |t|
+    t.string "code", limit: 45
+    t.datetime "actual_return_datetime"
+    t.bigint "asset_loan_id", null: false
+    t.integer "user_id"
+    t.integer "admin_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["asset_loan_id"], name: "index_asset_returns_on_asset_loan_id"
+  end
 
   create_table "departments", force: :cascade do |t|
     t.string "code_name", limit: 50
@@ -44,7 +118,7 @@ ActiveRecord::Schema.define(version: 2023_06_09_012608) do
   end
 
   create_table "users", force: :cascade do |t|
-    t.string "code", limit: 45
+    t.string "code", limit: 45, null: false
     t.string "name", limit: 100
     t.integer "department_id"
     t.integer "position_id"
@@ -61,6 +135,17 @@ ActiveRecord::Schema.define(version: 2023_06_09_012608) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "asset_loan_items", "asset_loans"
+  add_foreign_key "asset_loan_items", "items"
+  add_foreign_key "asset_loan_items", "users", column: "admin_id", name: "fk_rails_admin_id"
+  add_foreign_key "asset_loans", "users"
+  add_foreign_key "asset_return_items", "asset_returns"
+  add_foreign_key "asset_return_items", "items"
+  add_foreign_key "asset_returns", "asset_loans"
+  add_foreign_key "asset_returns", "users"
+  add_foreign_key "asset_returns", "users", column: "admin_id"
   add_foreign_key "users", "departments", name: "department_id"
   add_foreign_key "users", "positions", name: "position_id"
 end

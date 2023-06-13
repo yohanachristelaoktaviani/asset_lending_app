@@ -34,7 +34,11 @@
           <td><%= item.condition %></td>
           <td><%= item.status %></td>
           <td><%= item.description %></td>
-          <td><%= image_tag item.image %></td>
+          <td><% if item.image.attached? %>
+              <%= image_tag item.image, class:"imagee"%>
+              <% end %>
+          </td>
+
       </tr>
       <% end %>
 

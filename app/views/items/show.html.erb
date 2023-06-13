@@ -2,8 +2,6 @@
 
 <h1>Item Detail</h1>
 
-
-
 <table>
   <tr>
     <td><%= button_to "Edit", edit_item_path, method: 'get', class: "button1 btn btn-outline-primary" %></td>
@@ -14,9 +12,9 @@
 
 
 <div class="container3">
-  <div class="container4">
-      <image src="<%= (url_for(@item.image)) %>", class="imageee"></image>
-  </div>
+<div class="container4">
+<%= image_tag @item.image, class:"imageee"%>
+</div>
 </div>
 
 

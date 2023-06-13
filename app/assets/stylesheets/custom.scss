@@ -32,6 +32,16 @@ textarea {
   border-radius: .3rem;
 }
 
+.imagee{
+  width: 7rem;
+  height: 7rem;
+}
+
+.imageee{
+  width: 25rem;
+  height: 25rem;
+}
+
 .container1{
   width: 400px;
   height: 470px;
@@ -69,11 +79,21 @@ textarea {
 
 .container5{
   width: 450px;
-  height: 552px;
+  height: 570px;
   background-color: white;
   margin-top: -650px;
   margin-left: 800px;
 }
+
+.container6{
+  width: 450px;
+  height: 570px;
+  background-color: white;
+  margin-top: -700px;
+  margin-left: 700px;
+  margin-bottom: 150px;
+}
+
 
 
 .header-form{
@@ -245,7 +265,7 @@ td{
  }
 
 .button2{
-  width:150%;
+  width:120%;
   padding: 12px;
   font-size: 20px;
  }
@@ -254,7 +274,7 @@ td{
   width:80%;
   padding: 12px;
   font-size: 20px;
-  margin-left: 70px;
+  margin-left: 50px;
 }
 
 .button4{
@@ -279,7 +299,7 @@ td{
   margin-top: 30px;
   margin-bottom: -25px;
   margin-left: -10px;
-  font-size: 28px;
+  font-size: 35px;
   font-weight: bold;
 }
 

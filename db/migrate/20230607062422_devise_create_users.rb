@@ -5,7 +5,7 @@ class DeviseCreateUsers < ActiveRecord::Migration[6.1]
     create_table :users do |t|
 
       ## Core DB
-      t.string :code, limit: 45, unique: true
+      t.string :code, limit: 45, unique: true, null: false
       t.string :name, limit: 100
       t.integer :department_id
       t.integer :position_id
@@ -49,6 +49,7 @@ class DeviseCreateUsers < ActiveRecord::Migration[6.1]
 
     add_index :users, :email,                unique: true
     add_index :users, :reset_password_token, unique: true
+    add_index :users, :code,                 unique: true
     # add_index :users, :confirmation_token,   unique: true
     # add_index :users, :unlock_token,         unique: true
   end

@@ -1,4 +1,5 @@
 class ItemsController < ApplicationController
+
   def index
     @items = Item.order('code ASC')
   end
@@ -47,8 +48,12 @@ class ItemsController < ApplicationController
     end
   end
 
+
+  private
+
   def item_params
     params.require(:item).permit(:code, :name, :merk, :vendor_name, :condition, :status, :description, :image)
   end
+
 
 end

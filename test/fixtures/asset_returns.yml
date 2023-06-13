@@ -1,0 +1,9 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  code: MyString
+  actual_return_datetime: 2023-06-12 17:15:49
+
+two:
+  code: MyString
+  actual_return_datetime: 2023-06-12 17:15:49

@@ -15,6 +15,10 @@ gem 'jquery-rails'
 
 gem 'turbolinks', '~> 5'
 
+gem 'mini_magick', '~> 4.9.5'
+
+gem 'activestorage-validator'
+
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
 gem 'rails', '~> 6.1.4', '>= 6.1.4.6'
 
@@ -63,7 +67,7 @@ gem "bootsnap", require: false
 gem "sassc-rails"
 
 # Use Active Storage variants [https://guides.rubyonrails.org/active_storage_overview.html#transforming-images]
-# gem "image_processing", "~> 1.2"
+gem "image_processing", "~> 1.2"
 
 gem "devise"
 
