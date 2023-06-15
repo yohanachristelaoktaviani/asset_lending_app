@@ -1,4 +1,7 @@
+// @import "bootstrap-modal";
+// @import "bootstrap-sprockets";
 @import "bootstrap";
+
 
 /* universal */
 
@@ -91,9 +94,16 @@ textarea {
   background-color: white;
   margin-top: -700px;
   margin-left: 700px;
-  margin-bottom: 150px;
+  margin-bottom: 200px;
 }
 
+.container7{
+  width: 450px;
+  height: 570px;
+  background-color: white;
+  margin-top: -580px;
+  margin-left: 800px;
+}
 
 
 .header-form{
@@ -120,6 +130,7 @@ textarea {
   font-size: 20px;
   box-shadow:0 0 15px 4px rgba(0,0,0,0.06);
   width: 350px;
+  background-color: white;
 }
 
 .textbox2{
@@ -172,7 +183,7 @@ select{
 
 #nav{
   font-size: 1.1em;
-  margin-top: 23px;
+  margin-top: 150px;
   margin-right: 30px;
   letter-spacing: 1.2px;
   font-weight: bold;
@@ -265,16 +276,17 @@ td{
  }
 
 .button2{
-  width:120%;
+  width:170%;
   padding: 12px;
   font-size: 20px;
+  margin-left: -15px;
  }
 
 .button3{
-  width:80%;
+  width:100%;
   padding: 12px;
   font-size: 20px;
-  margin-left: 50px;
+  margin-left: 30px;
 }
 
 .button4{
@@ -285,6 +297,27 @@ td{
   font-weight: bold;
 }
 
+.button5{
+  width:130%;
+  padding: 12px;
+  font-size: 20px;
+  margin-left: -15px;
+ }
+
+ .button6{
+  width:100%;
+  padding: 12px;
+  font-size: 20px;
+  margin-left: 45px;
+}
+
+.button7{
+  width:80%;
+  padding: 12px;
+  font-size: 20px;
+  margin-left: 70px;
+}
+
 
 .font-user{
   padding: 15px;
@@ -292,7 +325,6 @@ td{
   font-size: 20px;
   font-weight: bold;
 }
-
 
 .font-item{
   padding: 15px;
@@ -303,10 +335,22 @@ td{
   font-weight: bold;
 }
 
+// .font-role{
+//   font-size: 15px;
+//   font-weight: lighter;
+//   margin-bottom: -5px;
+//   margin-top: -5px;
+// }
+
+// .font-header{
+//   margin-top: 35px;
+// }
+
 
 /* Table */
 .table{
-  margin-top: 50px;
+  margin-top: 30px;
+  margin-bottom: 200px;
 }
 
 .tablestat{

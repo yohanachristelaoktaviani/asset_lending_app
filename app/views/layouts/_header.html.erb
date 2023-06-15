@@ -2,18 +2,18 @@
   <div class="container ">
   <%= link_to image_tag("buildings.png", alt: "Ukirama logo", width: "100"), id:"logo2" %>
   <nav>
-      <ul class="nav navbar-nav navbar-right">
+      <ul class="nav navbar-nav navbar-right font-header">
 
-        <% if user_signed_in? %>
-        <li><%= link_to "Dashboard", items_path, id:"nav" %></li>
+        <% if current_user&.role == 'admin' %>
+        <li><%= link_to "Dashboard", asset_loans_items_path, id:"nav" %></li>
 
         <li><%= link_to "Items", items_path, id:"nav" %></li>
 
         <li><%= link_to "Users", users_path, id:"nav" %></li>
 
-        <li><%= link_to "Asset Loan", asset_loans_items_path, id:"nav" %></li>
+        <li><%= link_to "Loan Items", asset_loans_items_path, id:"nav" %></li>
 
-        <li><%= link_to "Asset Return", items_path, id:"nav" %></li>
+        <li><%= link_to "Return Items", asset_return_items_path, id:"nav" %></li>
 
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown nav" role="button" data-toggle="dropdown" >
@@ -23,6 +23,21 @@
             <%= link_to "Log out", destroy_user_session_path, method: :delete, class:"dropdown-item" %>
           </div>
         </li>
+
+        <% elsif current_user %>
+          <li><%= link_to "Dashboard", user_items_path, id:"nav" %></li>
+          <li><%= link_to "Items", user_items_path, id:"nav" %></li>
+          <li><%= link_to "Loan Items", user_items_path, id:"nav" %></li>
+          <li><%= link_to "Return Items", user_items_path, id:"nav" %></li>
+
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown nav" role="button" data-toggle="dropdown" >
+              <%= current_user.email %>
+            </a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+              <%= link_to "Log out", destroy_user_session_path, method: :delete, class:"dropdown-item" %>
+            </div>
+          </li>
 
         <% else %>
           <li><%= link_to "Home",   unauthenticated_root_path, id:"nav" %></li>

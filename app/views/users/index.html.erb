@@ -2,8 +2,19 @@
 <div class="form">
 <br>
 
-
 <h1>Users Index</h1>
+
+<% if flash[:success] %>
+<div class="alert alert-success">
+  <%= flash[:success] %>
+</div>
+<% end %>
+
+<% if flash[:errors] %>
+<div class="alert alert-danger">
+  <%= flash[:errors] %>
+</div>
+<% end %>
 
 <table>
   <tr>

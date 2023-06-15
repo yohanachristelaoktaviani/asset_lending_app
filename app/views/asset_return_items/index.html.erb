@@ -1,0 +1,51 @@
+<% provide(:title, "Asset Return") %>
+
+<div class="form">
+<br>
+
+<h1>Return Items Index</h1>
+
+<% if flash[:success] %>
+<div class="alert alert-success">
+  <%= flash[:success] %>
+</div>
+<% end %>
+
+<% if flash[:errors] %>
+<div class="alert alert-danger">
+  <%= flash[:errors] %>
+</div>
+<% end %>
+
+<table class="table table-bordered table-striped table-hover w-100 center">
+  <thead class="thead">
+    <tr>
+      <th class="th">Return ID</th>
+      <th class="th">Item</th>
+      <th class="th">Item ID</th>
+      <th class="th">User</th>
+      <th class="th">Actual Return Date</th>
+      <th class="th">Actual Item Condition</th>
+      <th class="th">Return Status</th>
+      <th class="th">Admin</th>
+      <th class="th">Status</th>
+    </tr>
+  </thead>
+  <tbody>
+  <% @return_items.each do |retur| %>
+      <tr>
+          <td style="text-align:left"><%= link_to retur.asset_return.code, asset_return_item_path(retur) %></td>
+          <td><%= retur.item_name.name %></td>
+          <td><%= retur.item_name.code %></td>
+          <td><%= retur.asset_return.user.name %></td>
+          <td><%= retur.asset_return.actual_return_datetime %></td>
+          <td><%= retur.item_condition.condition %></td>
+          <td><%= retur.return_status %></td>
+          <td><%= retur.admin.name %></td>
+          <td><%= retur.status %></td>
+      </tr>
+      <% end %>
+
+  </tbody>
+</table>
+</div>

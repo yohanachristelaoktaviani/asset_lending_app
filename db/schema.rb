@@ -74,6 +74,8 @@ ActiveRecord::Schema.define(version: 2023_06_12_102753) do
     t.string "actual_item_condition", limit: 50
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.bigint "admin_id"
+    t.string "status", limit: 50
     t.index ["asset_return_id"], name: "index_asset_return_items_on_asset_return_id"
     t.index ["item_id"], name: "index_asset_return_items_on_item_id"
   end
@@ -83,7 +85,6 @@ ActiveRecord::Schema.define(version: 2023_06_12_102753) do
     t.datetime "actual_return_datetime"
     t.bigint "asset_loan_id", null: false
     t.integer "user_id"
-    t.integer "admin_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["asset_loan_id"], name: "index_asset_returns_on_asset_loan_id"
@@ -143,9 +144,9 @@ ActiveRecord::Schema.define(version: 2023_06_12_102753) do
   add_foreign_key "asset_loans", "users"
   add_foreign_key "asset_return_items", "asset_returns"
   add_foreign_key "asset_return_items", "items"
+  add_foreign_key "asset_return_items", "users", column: "admin_id", name: "fk_rails_admin"
   add_foreign_key "asset_returns", "asset_loans"
   add_foreign_key "asset_returns", "users"
-  add_foreign_key "asset_returns", "users", column: "admin_id"
   add_foreign_key "users", "departments", name: "department_id"
   add_foreign_key "users", "positions", name: "position_id"
 end

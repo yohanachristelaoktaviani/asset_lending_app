@@ -10,41 +10,55 @@ class AssetLoansItemsController < ApplicationController
 
   def accept
     @loan_item = AssetLoanItem.find(params[:id])
-
-    # @user = User.all
-
-    # binding.pry
     @loan_item.loan_status = "accepted"
-
-    # @loan_item.item_name.status = "unavailable"
+    @loan_item.evidence = " "
     @loan_item.admin_id = current_user.id
-    # binding.pry
-    @loan_item.asset_loan.save
     @loan_item.item_name.save
     @loan_item.save
     @current_user = current_user
-    # @loan_item.update(@loan_item.asset_loan.loan_status = "accepted")
-    # current_user.email
+    flash[:success] = "Accepted succesfully"
     redirect_to asset_loans_items_path(@loan_item)
   end
 
   def cancel
     @loan_item = AssetLoanItem.find(params[:id])
-    @loan_item.loan_status = "cancel"
+    @loan_item.loan_status = "waiting"
     @loan_item.item_name.status = "available"
+    @loan_item.evidence = " "
+    @loan_item.admin_id = current_user.id
     @loan_item.save
     @loan_item.item_name.save
+    @current_user = current_user
+    flash[:success] = "Canceled succesfully"
     redirect_to asset_loans_items_path(@loan_item)
   end
 
 
+  # def decline
+  #   @loan_item = AssetLoanItem.find(params[:id])
+  #   @loan_item.loan_status = "decline"
+  #   @loan_item.item_name.status = "available"
+  #   @loan_item.save
+  #   @loan_item.item_name.save
+  #   # @loan_item.update(loan_status: 'declined', evidence: params[:evidence])
+  #   redirect_to asset_loans_items_path, notice: 'Item declined successfully.'
+  # end
+
   def decline
     @loan_item = AssetLoanItem.find(params[:id])
+    @loan_item.evidence = params[:evidence]
     @loan_item.loan_status = "decline"
     @loan_item.item_name.status = "available"
-    @loan_item.save
+    @loan_item.admin_id = current_user.id
+    @current_user = current_user
     @loan_item.item_name.save
-    redirect_to asset_loans_items_path(@loan_item)
+    if @loan_item.save
+      flash[:errors] = "Item decline successfuly"
+      redirect_to  asset_loans_items_path(@loan_item)
+    else
+      flash[:errors] = @loan_item.errors.full_messages
+      redirect_to asset_loans_item_path
+    end
   end
 
 end

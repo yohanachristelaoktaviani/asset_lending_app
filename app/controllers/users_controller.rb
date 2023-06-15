@@ -11,7 +11,7 @@ class UsersController < ApplicationController
   def create
     @user = User.new(user_params)
     # binding.pry
-    @user.save
+
     if @user.save
       flash[:success] = "New user was successfully created"
       redirect_to users_path(@user)
@@ -35,6 +35,7 @@ class UsersController < ApplicationController
   def update
     @user = User.find(params[:id])
     @user.update(user_params)
+    flash[:success] = "User was succesfully updated"
     redirect_to users_path
   end
 
@@ -45,11 +46,11 @@ class UsersController < ApplicationController
   def destroy
     @user = User.find(params[:id])
     if @user.destroy
-      flash[:danger] = "User was successfully deleted"
+      flash[:errors] = "User was successfully deleted"
       redirect_to users_path(@user)
     else
       puts 'ERROR ', @user.errors.full_messages
-      flash[:danger] = @user.errors.full_messages
+      flash[:errors] = @user.errors.full_messages
       redirect_to users_path
     end
   end

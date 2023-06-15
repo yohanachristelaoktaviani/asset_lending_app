@@ -27,7 +27,7 @@
           </p>
           <p>
           <%= f.label :merk, class:"tlabel" %>
-          <%= f.date_field :merk, class:"textbox2" %>
+          <%= f.text_field :merk, class:"textbox2" %>
           </p>
           <p>
           <%= f.label :vendor_name, class:"tlabel" %>
@@ -36,10 +36,6 @@
           <p>
           <%= f.label :condition, class:"tlabel" %>
           <%= f.select :condition, ['good', 'damage', 'unusable'] %>
-          </p>
-          <p>
-          <%= f.label :status, class:"tlabel" %>
-          <%= f.select :status, ['available', 'unavailable'] %>
           </p>
           <p>
           <%= f.label :description, class:"tlabel" %>

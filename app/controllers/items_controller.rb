@@ -10,8 +10,7 @@ class ItemsController < ApplicationController
 
   def create
     @item = Item.new(item_params)
-
-    @item.save
+    @item.status = "available"
     if @item.save
       flash[:success] = "New item was successfully added"
       redirect_to items_path(@item)
@@ -33,17 +32,18 @@ class ItemsController < ApplicationController
   def update
     @item = Item.find(params[:id])
     @item.update(item_params)
+    flash[:success] = "Item was successfully updated"
     redirect_to items_path
   end
 
   def destroy
     @item = Item.find(params[:id])
     if @item.destroy
-      flash[:danger] = "Item was successfully deleted"
+      flash[:errors] = "Item was successfully deleted"
       redirect_to items_path(@item)
     else
       puts 'ERROR ', @item.errors.full_messages
-      flash[:danger] = @item.errors.full_messages
+      flash[:errors] = @item.errors.full_messages
       redirect_to items_path
     end
   end
