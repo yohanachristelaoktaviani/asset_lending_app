@@ -1,40 +1,102 @@
 <% provide(:title, "Loan Item") %>
 
 <% if flash[:errors] %>
-<div class="alert alert-danger">
-<ul>
-  <%= flash[:errors].each do |error| %>
-    <li><%= error %></li>
-    <% end %>
-</ul>
-</div>
+  <div class="alert alert-danger">
+    <ul>
+      <%= flash[:errors].each do |error| %>
+        <li><%= error %></li>
+        <% end %>
+    </ul>
+  </div>
 <% end %>
 
 <div class="form2">
-<div class="font-edit">
-<h2>Item to loan</h2>
+  <div class="font-edit">
+    <h2>New Loan</h2>
+  </div>
+  <%= form_with(model: @loan_item, local: true)do |f| %>
+    <div class="font-user">
+      <hr>
+      <p>
+        <%= f.label :code, class:"tlabel" %>
+        <%= f.text_field :code, class:"textbox2" %>
+      </p>
+      <p>
+        <%= f.label :loan_item_datetime, class:"tlabel" %>
+        <%= f.date_field :loan_item_datetime, class:"textbox2" %>
+      </p>
+      <p>
+        <%= f.label :estimation_return_datetime, class:"tlabel" %>
+        <%= f.date_field :estimation_return_datetime, class:"textbox2" %>
+      </p>
+    </div>
+
+    <h2>Items</h2>
+    <hr>
+      <table class="table table-bordered table-striped table-hover w-100">
+        <%= f.fields_for :asset_loan_items do |fs| %>
+        <tr>
+          <td>
+            <%= fs.collection_select :item_id, @items, :id, :name, { prompt: 'Select a skill' } %>
+          </td>
+          <td>
+            <%= fs.text_field :necessary, class:"textbox2" %>
+          </td>
+          <td>
+            <%= link_to 'Delete Skill', '#', class: "btn btn-danger w-100 delete-item" %>
+          </td>
+        </tr>
+        <% end %>
+      </table>
+
+      <p>
+        <td colspan="2"><%= link_to 'Add Item', '#', class: 'btn btn-add-item btn-primary w-50 add-skill' %></td>
+      </p>
+
+      <p>
+        <%= f.submit "UPDATE", class: "btn-add-skill btn btn-secondary btn-lg w-50", style:"margin-top:20px" %>
+      </p>
 </div>
-        <%= form_with(model: @loan_item, local: true)do |f| %>
-        <div class="font-user">
-        <hr>
-          <p>
-          <%= f.label :code, class:"tlabel" %>
-          <%= f.text_field :code, class:"textbox2" %>
-          </p>
-          <p>
-          <%= f.label :name, class:"tlabel" %>
-          <%= f.text_field :name, class:"textbox2" %>
-          </p>
-          <p>
-          <%= f.label :loan_item_datetime, class:"tlabel" %>
-          <%= f.date_field :loan_item_datetime, class:"textbox2" %>
-          </p>
-          <p>
-          <%= f.label :estimation_return_datetime, class:"tlabel" %>
-          <%= f.date_field :estimation_return_datetime, class:"textbox2" %>
-          </p>
-          <%= f.submit "ADD", class: "button4 btn btn-secondary btn-lg" %>
-          </p>
-          <% end %>
-        </div>
-</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const addItemButton = document.querySelector('.add-item');
+    const itemsContainer = document.querySelector('table tbody');
+    const deleteItemButtons = document.querySelectorAll('.delete-item');
+    let itemCount = 0;
+
+    addItemButton.addEventListener('click', (event) => {
+      const itemTemplate = document.querySelector('.item-template');
+      const newItem = skillTemplate.content.cloneNode(true);
+
+      itemsContainer.appendChild(newItem);
+      itemCount++;
+    });
+
+    deleteItemButtons.forEach((button) => {
+      button.addEventListener('click', (event) => {
+        event.preventDefault();
+        const row = event.target.closest('tr');
+        row.remove();
+        itemCount--;
+        addSkillButton.disabled = false;
+      });
+    });
+  });
+</script>
+
+
+<template class="item-template">
+ <tr>
+    <td>
+      <%= f.collection_select :item_id, @items, :id, :name, { prompt: 'Select an item' }, { class: 'skill-select' } %>
+    </td>
+    <td>
+      <%= f.text_field :necessary, class:"textbox2" %>
+    </td>
+    <td>
+      <%= link_to 'Delete Skill', '#', class: "btn btn-danger w-100 delete-item" %>
+    </td>
+  </tr>
+</template>
+<% end %>
