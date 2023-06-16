@@ -11,6 +11,6 @@ class CreateAssetReturns < ActiveRecord::Migration[6.1]
     end
     add_foreign_key :asset_returns, :users, column: :user_id, primary_key: "id"
 
-    add_index :asset_returns, :code,                 unique: true
+    add_index :asset_loans, :code,                 unique: true
   end
 end

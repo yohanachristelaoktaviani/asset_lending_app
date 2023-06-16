@@ -1,0 +1,40 @@
+<% provide(:title, "Loan Item") %>
+
+<% if flash[:errors] %>
+<div class="alert alert-danger">
+<ul>
+  <%= flash[:errors].each do |error| %>
+    <li><%= error %></li>
+    <% end %>
+</ul>
+</div>
+<% end %>
+
+<div class="form2">
+<div class="font-edit">
+<h2>Item to loan</h2>
+</div>
+        <%= form_with(model: @loan_item, local: true)do |f| %>
+        <div class="font-user">
+        <hr>
+          <p>
+          <%= f.label :code, class:"tlabel" %>
+          <%= f.text_field :code, class:"textbox2" %>
+          </p>
+          <p>
+          <%= f.label :name, class:"tlabel" %>
+          <%= f.text_field :name, class:"textbox2" %>
+          </p>
+          <p>
+          <%= f.label :loan_item_datetime, class:"tlabel" %>
+          <%= f.date_field :loan_item_datetime, class:"textbox2" %>
+          </p>
+          <p>
+          <%= f.label :estimation_return_datetime, class:"tlabel" %>
+          <%= f.date_field :estimation_return_datetime, class:"textbox2" %>
+          </p>
+          <%= f.submit "ADD", class: "button4 btn btn-secondary btn-lg" %>
+          </p>
+          <% end %>
+        </div>
+</div>

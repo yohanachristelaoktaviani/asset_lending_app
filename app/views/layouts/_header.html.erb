@@ -27,7 +27,7 @@
         <% elsif current_user %>
           <li><%= link_to "Dashboard", user_items_path, id:"nav" %></li>
           <li><%= link_to "Items", user_items_path, id:"nav" %></li>
-          <li><%= link_to "Loan Items", user_items_path, id:"nav" %></li>
+          <li><%= link_to "Loan Items", user_asset_loans_path, id:"nav" %></li>
           <li><%= link_to "Return Items", user_items_path, id:"nav" %></li>
 
           <li class="nav-item dropdown">

@@ -30,4 +30,5 @@ Rails.application.routes.draw do
     post :received, on: :member
   end
   resources :user_items
+  resources :user_asset_loans
 end
