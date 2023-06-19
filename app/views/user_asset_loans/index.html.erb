@@ -1,62 +1,57 @@
 <% provide(:title, "Loan Items") %>
 <div class="form">
-<br>
+  <br>
+  <h1>Loan Items Index</h1>
 
-<h1>Loan Items Index</h1>
+  <% if flash[:success] %>
+  <div class="alert alert-success">
+    <%= flash[:success] %>
+  </div>
+  <% end %>
 
-<% if flash[:success] %>
-<div class="alert alert-success">
-  <%= flash[:success] %>
-</div>
-<% end %>
+  <% if flash[:errors] %>
+  <div class="alert alert-danger">
+    <%= flash[:errors] %>
+  </div>
+  <% end %>
 
-<% if flash[:errors] %>
-<div class="alert alert-danger">
-  <%= flash[:errors] %>
-</div>
-<% end %>
-
-<table>
-  <tr>
-    <td><%= button_to "Borrow an item", new_user_asset_loan_path, method: 'get', class: "button2 btn btn-primary" %></td>
-    </tr>
-</table>
-
-<table class="table table-bordered table-striped table-hover w-100 center">
-  <thead class="thead">
+  <table>
     <tr>
-      <th class="th">Loan ID</th>
-      <th class="th">Item ID</th>
-       <th class="th">Item Name</th>
-      <th class="th">Loan Date</th>
-      <th class="th">Return Estimation Date</th>
-      <th class="th">Item Condition</th>
-      <th class="th">Necessary</th>
-      <th class="th">Admin</th>
-      <th class="th">Loan Status</th>
-      <th class="th">Evidence</th>
-    </tr>
-  </thead>
-  <tbody>
-  <% @loan_items.each do |loan| %>
-      <tr>
-          <td style="text-align:left"><%= link_to loan.code, asset_loans_item_path(loan) %></td>
-          <td><%= loan.asset_loan_items %></td>
-          <td><%= loan.asset_loan_items.name %></td>
-          <td><%= loan.loan_item_datetime %></td>
-          <td><%= loan.return_estimation_datetime %></td>
-          <td><%= loan.asset_loan_items.items.condition %></td>
-          <td><%= loan.necessary %></td>
-          <td><%= loan.admin.name %></td>
-          <td><%= loan.asset_loan_item.loan_status %></td>
-          <td><%= loan.asset_loan_item.evidence %></td>
+      <td><%= button_to "Borrow an item", new_user_asset_loan_path, method: 'get', class: "button2 btn btn-primary" %></td>
       </tr>
+  </table>
+
+  <table class="table table-bordered table-striped table-hover w-100 center">
+    <thead class="thead">
+      <tr>
+        <th class="th">Loan ID</th>
+        <th class="th">Item ID</th>
+        <th class="th">Item Name</th>
+        <th class="th">Loan Date</th>
+        <th class="th">Return Estimation Date</th>
+        <th class="th">Item Condition</th>
+        <th class="th">Necessary</th>
+        <th class="th">Admin</th>
+        <th class="th">Loan Status</th>
+        <th class="th">Evidence</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @loan_items.each do |loan| %>
+        <tr>
+            <td style="text-align:left"><%= link_to loan.asset_loan.code, asset_loans_item_path(loan) %></td>
+            <td><%= loan.item.code %></td>
+            <td><%= loan.item.name %></td>
+            <td><%= loan.asset_loan.loan_item_datetime %></td>
+            <td><%= loan.asset_loan.return_estimation_datetime %></td>
+            <td><%= loan.item.condition %></td>
+            <td><%= loan.asset_loan.necessary %></td>
+            <td><%= loan.admin.name %></td>
+            <td><%= loan.loan_status %></td>
+            <td><%= loan.evidence %></td>
+        </tr>
       <% end %>
-
-  </tbody>
-</table>
-
-
-<br>
-
+    </tbody>
+  </table>
+  <br>
 </div>

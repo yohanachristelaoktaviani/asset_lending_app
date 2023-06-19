@@ -1,9 +1,8 @@
 class UserAssetLoansController < ApplicationController
     def index
-        @loan_items = AssetLoan.joins(:asset_loan_items).where("user_id = ?", current_user.id)        
-        
+        @loan_items =  @loan_items = AssetLoanItem.joins(:asset_loan).where(asset_loans: { user_id: current_user.id}) 
     end
-
+    
     def new 
         @loan_item = AssetLoan.new
         @items = Item.where("status = ?", "available") 
