@@ -1,0 +1,85 @@
+<% provide(:title, "Return Items") %>
+
+<% if flash[:success] %>
+<div class="alert alert-success">
+  <%= flash[:success] %>
+</div>
+<% end %>
+
+<% if flash[:errors] %>
+<div class="alert alert-danger">
+  <%= flash[:errors] %>
+</div>
+<% end %>
+
+<div class="container9 mb-5">
+<h1 class="pb-0 mb-2">Return Item</h1>
+<div class="table-responsive w-100 mb-5">
+<table class="table borderless w-100 mb-5">
+  <tr>
+  <td><%= button_to "Create", new_user_asset_return_path, method: 'get', class: "button2 btn btn-primary" %></td>
+  <td>
+    <div class="table-container">
+      <%= form_tag user_asset_returns_path, method: 'get' do %>
+          <div class="input-group mx-1 search">
+            <div class="container-icon">
+              <span class="search-icon"><i class="fa fa-search"></i></span>
+            </div>
+            <%= text_field_tag :search, params[:search], placeholder: 'Type here...', class: "form-control search-box" %>
+            <span class="input-group-btn">
+              <%= submit_tag "Search", class: "btn btn-secondary search-button" %>
+            </span>
+            </div>
+      <% end %>
+    </td>
+  </tr>
+</table>
+
+<table class="table table-bordered table-striped table-hover w-100 center">
+  <thead class="thead">
+    <tr>
+      <th class="th">Return ID</th>
+      <th class="th">Item</th>
+      <th class="th">User</th>
+      <th class="th">Actual Condition</th>
+      <th class="th">Actual Return Datetime</th>
+      <th class="th">Return Status</th>
+    </tr>
+  </thead>
+  <tbody>
+  <% grouped_asset_returns = @asset_returns.group_by { |asset| asset.asset_return.code } %>
+  <% grouped_asset_returns.each do |return_code, assets| %>
+    <% rowspan = assets.size %>
+    <% assets.each_with_index do |asset, index| %>
+      <tr>
+        <% if index == 0 %>
+          <td rowspan="<%= rowspan %>"><%= return_code %></td>
+        <% end %>
+        <td><%= asset.item.name %></td>
+        <td><%= asset.asset_return.user.name %></td>
+        <td>
+          <% if asset.actual_item_condition == "good" %>
+            <span class="badge rounded-pill bg-success"><%= asset.actual_item_condition %></span>
+          <% elsif asset.actual_item_condition == "damage" %>
+            <span class="badge rounded-pill bg-warning"><%= asset.actual_item_condition %></span>
+          <% elsif asset.actual_item_condition == "unusable" %>
+            <span class="badge rounded-pill bg-danger"><%= asset.actual_item_condition %></span>
+          <% end %>
+        </td>
+        <td><%= asset.asset_return.actual_return_datetime.localtime.strftime("%Y-%m-%d %H:%M:%S") %></td>
+        <td>
+          <% if asset.asset_return.return_status == "on time" %>
+            <span class="badge rounded-pill bg-success"><%= asset.asset_return.return_status %></span>
+          <% elsif asset.asset_return.return_status == "late" %>
+            <span class="badge rounded-pill bg-danger"><%= asset.asset_return.return_status %></span>
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+  <% end %>
+  </tbody>
+</table>
+</div>
+<%= paginate @asset_returns, :window => 3 %>
+</div>
+

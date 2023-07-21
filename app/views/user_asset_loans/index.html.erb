@@ -1,0 +1,82 @@
+<% provide(:title, "Loan Items") %>
+<div class="form">
+  <br>
+  <div class="container9 mb-5">
+  <h1>Loan Items</h1>
+
+  <% if flash[:success] %>
+  <div class="alert alert-success">
+    <%= flash[:success] %>
+  </div>
+  <% end %>
+
+  <% if flash[:errors] %>
+  <div class="alert alert-danger">
+    <%= flash[:errors] %>
+  </div>
+  <% end %>
+
+  <table>
+    <tr>
+      <td><%= button_to "Borrow an item", new_user_asset_loan_path, method: 'get', class: "btn btn-primary btn-lg" %></td>
+      </tr>
+  </table>
+
+  <table class="table table-bordered table-striped table-hover w-100 center">
+    <thead class="thead">
+      <tr>
+        <th class="th">Loan ID</th>
+        <th class="th">Item Name</th>
+        <th class="th">Loan Date</th>
+        <th class="th">Return Estimation Date</th>
+        <th class="th">Item Condition</th>
+        <th class="th">Necessary</th>
+        <th class="th">Admin</th>
+        <th class="th">Loan Status</th>
+        <th class="th">Evidence</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @loans.each do |loan| %>
+        <tr>
+            <td style="text-align:left"><%= link_to loan.asset_loan.code, user_asset_loan_path(loan.asset_loan.id) %></td>
+            <td><%= loan.item.name %></td>
+            <td><%= loan.asset_loan.loan_item_datetime.strftime("%Y-%m-%d %H:%M:%S") %></td>
+            <td><%= loan.asset_loan.return_estimation_datetime.strftime("%Y-%m-%d %H:%M:%S") %></td>
+            <td>
+              <% if loan.item.condition == "good" %>
+                <span class="badge rounded-pill bg-success"><%= loan.item.condition %></span>
+              <% elsif loan.item.condition == "damage" %>
+                <span class="badge rounded-pill bg-warning"><%= loan.item.condition %></span>
+              <% elsif loan.item.condition == "unusable" %>
+                <span class="badge rounded-pill bg-danger"><%= loan.item.condition %></span>
+            <% end %>
+            </td>
+            <td><%= loan.asset_loan.necessary %></td>
+            <td>
+              <%= if loan.admin.present?
+                    loan.admin.name
+                  else
+                    ""
+                  end
+              %>
+            </td>
+            <td>
+              <% if loan.loan_status == "accepted" %>
+                  <span class="badge rounded-pill bg-success"><%= loan.loan_status %></span>
+                <% elsif loan.loan_status == "decline" %>
+                  <span class="badge rounded-pill bg-danger"><%= loan.loan_status %></span>
+                <% elsif loan.loan_status == "waiting" %>
+                  <span class="badge rounded-pill bg-warning"><%= loan.loan_status %></span>
+                <% elsif loan.loan_status == "cancel" %>
+                  <span class="badge rounded-pill bg-secondary"><%= loan.loan_status %></span>
+                <% end %>
+            </td>
+            <td><%= loan.evidence %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+  <br>
+</div>
+</div>

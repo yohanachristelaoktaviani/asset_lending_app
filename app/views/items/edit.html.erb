@@ -10,49 +10,61 @@
 </div>
 <% end %>
 
+<div class="container8">
 <div class="form2">
-<div class="font-edit">
-<h2>Edit Item</h2>
-</div>
-        <%= form_with(model: @item, local: true)do |f| %>
-        <div class="font-user">
-        <hr>
-          <p>
-          <%= f.label :code, class:"tlabel" %>
-          <%= f.text_field :code, disabled: true,  class:"textbox2" %>
-          </p>
-          <p>
-          <%= f.label :name, class:"tlabel" %>
-          <%= f.text_field :name, class:"textbox2" %>
-          </p>
-          <p>
-          <%= f.label :merk, class:"tlabel" %>
-          <%= f.text_field :merk, class:"textbox2" %>
-          </p>
-          <p>
-          <%= f.label :vendor_name, class:"tlabel" %>
-          <%= f.text_field :vendor_name, class:"textbox2" %>
-          </p>
-          <p>
-          <%= f.label :condition, class:"tlabel" %>
-          <%= f.select :condition, ['good', 'damage', 'unusable'] %>
-          </p>
-          <p>
-          <%= f.label :status, class:"tlabel" %>
-          <%= f.select :status, ['available', 'unavailable'] %>
-          </p>
-          <p>
-          <%= f.label :description, class:"tlabel" %>
-          <%= f.text_field :description, class:"textbox2" %>
-          </p>
-          <p>
+  <div class="font-edit">
+    <h2>Edit Item</h2>
+  </div>
+  <%= form_with(model: @item, local: true)do |f| %>
+  <div class="font-user">
+  <hr>
+    <p>
+      <%= f.label :code, class:"tlabel" %>
+      <%= f.text_field :code, readonly: true,  class:"textbox2" %>
+    </p>
+    <p>
+    <%= f.label :name, class:"tlabel" do %>
+      <%= "Name" %>
+      <span class="required">*</span>
+    <% end %>
+      <%= f.text_field :name, class:"textbox2", required: true %>
+    </p>
+    <p>
+    <%= f.label :merk, class:"tlabel" do %>
+      <%= "Merk" %>
+      <span class="required">*</span>
+    <% end %>
+      <%= f.text_field :merk, class:"textbox2", required: true  %>
+    </p>
+    <p>
+      <%= f.label :vendor_name, class:"tlabel" %>
+      <%= f.text_field :vendor_name, class:"textbox2" %>
+    </p>
+    <p>
+      <%= f.label :condition, class:"tlabel" %>
+      <%= f.select :condition, ['good', 'damage', 'unusable'], {}, class:"textbox4" %>
+    </p>
+    <p>
+      <%= f.label :status, class:"tlabel" %>
+      <%= f.select :status, ['available', 'unavailable'], {}, class:"textbox4" %>
+    </p>
+    <p>
+      <%= f.label :description, class:"tlabel" %>
+      <%= f.text_area :description, class:"textbox2" %>
+    </p>
+      <div class="input-group custom-file-button mb-3">
+        <div class="input-group-prepend">
           <%= f.label :image, class:"tlabel" %>
-          <%= f.file_field :image %>
-          </p>
-
-          <p>
-          <%= f.submit "UPDATE", class: "button4 btn btn-secondary btn-lg" %>
-          </p>
-          <% end %>
+          <%= f.file_field :image, class:"form-control textbox5",  id:"inputGroupFile"  %>
         </div>
+      </div>
+    </p>
+    </div>
+      <span class="required"> &ensp; *Required fields</span>
+    <p>
+      <%= f.submit "UPDATE", class: "button4 btn btn-primary btn-lg" %>
+    </p>
+    <% end %>
+
+</div>
 </div>

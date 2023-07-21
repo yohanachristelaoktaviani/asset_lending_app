@@ -13,11 +13,19 @@
           </p>
           <p>
           <%= f.label :name, class:"tlabel" %>
-          <%= f.text_field :name,id: "name-field", onkeypress: "return /[a-zA-Z]/i.test(event.key)",  class:"textbox2" %>
+          <%= f.text_field :name,id: "name-field",onkeypress: "return /^[a-zA-Z\s]*$/.test(event.key)",  class:"textbox2" %>
           </p>
           <p>
           <%= f.label :email, class:"tlabel" %>
           <%= f.text_field :email, class:"textbox2" %>
+          </p>
+          <p>
+          <%= f.label :password, class:"tlabel" %>
+          <%= f.text_field :password, type:"password" ,class:"textbox2" %>
+          </p>
+          <p>
+          <%= f.label :password_confirmation, class:"tlabel" %>
+          <%= f.text_field :password_confirmation, type:"password", class:"textbox2" %>
           </p>
           <p>
           <%= f.label :department, class:"tlabel" %>
@@ -29,10 +37,10 @@
           </p>
           <p>
           <%= f.label :role, class:"tlabel" %>
-          <%= f.select :role, ['admin', 'user'] %>
+          <%= f.select :role, ['admin', 'user'], {}, class:"textbox4" %>
           </p>
           <p>
-          <%= f.submit "UPDATE", class: "button4 btn btn-secondary btn-lg" %>
+          <%= f.submit "UPDATE", class: "button4 btn btn-primary btn-lg" %>
           </p>
           <% end %>
         </div>

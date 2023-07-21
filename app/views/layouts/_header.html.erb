@@ -1,51 +1,52 @@
-<header class="navbar navbar-expand-lg navbar-light">
-  <div class="container ">
-  <%= link_to image_tag("buildings.png", alt: "Ukirama logo", width: "100"), id:"logo2" %>
-  <nav>
-      <ul class="nav navbar-nav navbar-right font-header">
+<header>
+  <nav class="navbar navbar-expand-lg">
+    <div class="container">
+      <%= link_to image_tag("ukirama_bg.png", alt: "Ukirama logo", width: "120"), id:"logo2" %>
+        <button class="navbar-toggler collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation" style="color:#2e5c9a">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse mx-3" id="navbarSupportedContent">
+          <ul class="nav navbar-nav ms-auto font-header">
+            <% if current_user&.role == 'admin' %>
+            <li class="nav-item"><%= link_to "Dashboard", asset_loans_items_path, id:"nav", class:"nav-hover" %></li>
 
-        <% if current_user&.role == 'admin' %>
-        <li><%= link_to "Dashboard", asset_loans_items_path, id:"nav" %></li>
+            <li class="nav-item"><%= link_to "Item", items_path, id:"nav", class:"nav-hover" %></li>
 
-        <li><%= link_to "Items", items_path, id:"nav" %></li>
+            <li class="nav-item"><%= link_to "User", users_path, id:"nav", class:"nav-hover" %></li>
 
-        <li><%= link_to "Users", users_path, id:"nav" %></li>
+            <li class="nav-item"><%= link_to "Loan", asset_loans_items_path, id:"nav", class:"nav-hover" %></li>
 
-        <li><%= link_to "Loan Items", asset_loans_items_path, id:"nav" %></li>
+            <li class="nav-item"><%= link_to "Return", asset_return_items_path, id:"nav", class:"nav-hover" %></li>
 
-        <li><%= link_to "Return Items", asset_return_items_path, id:"nav" %></li>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown nav" role="button" data-toggle="dropdown" >
+                <i class="fa fa-user"></i>
+                <%= current_user.email %>
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <%= link_to "Logout", destroy_user_session_path, method: :delete, class:"dropdown-item" %>
+              </div>
+            </li>
 
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown nav" role="button" data-toggle="dropdown" >
-            <%= current_user.email %>
-          </a>
-          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-            <%= link_to "Log out", destroy_user_session_path, method: :delete, class:"dropdown-item" %>
-          </div>
-        </li>
+            <% elsif current_user %>
+              <li><%= link_to "Dashboard", user_items_path, id:"nav", class:"nav-hover" %></li>
+              <li><%= link_to "Item", user_items_path, id:"nav" , class:"nav-hover" %></li>
+              <li><%= link_to "Loan",  user_asset_loans_path, id:"nav", class:"nav-hover" %></li>
+              <li><%= link_to "Return", user_asset_returns_path, id:"nav", class:"nav-hover" %></li>
 
-        <% elsif current_user %>
-          <li><%= link_to "Dashboard", user_items_path, id:"nav" %></li>
-          <li><%= link_to "Items", user_items_path, id:"nav" %></li>
-          <li><%= link_to "Loan Items", user_items_path, id:"nav" %></li>
-          <li><%= link_to "Return Items", user_items_path, id:"nav" %></li>
-
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown nav" role="button" data-toggle="dropdown" >
-              <%= current_user.email %>
-            </a>
-            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-              <%= link_to "Log out", destroy_user_session_path, method: :delete, class:"dropdown-item" %>
-            </div>
-          </li>
-
-        <% else %>
-          <li><%= link_to "Home",   unauthenticated_root_path, id:"nav" %></li>
-          <li><%= link_to "Log in", new_user_session_path, id:"nav" %></li>
-        <% end %>
-
-      </ul>
-    </nav>
-  </div>
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown nav" role="button" data-toggle="dropdown"  >
+                  <i class="fa fa-user"></i>
+                  <%= current_user.email %>
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                  <%= link_to "Logout", destroy_user_session_path, method: :delete, class:"dropdown-item" %>
+                </div>
+              </li>
+            <% end %>
+          </ul>
+       </div>
+    </div>
+  </nav>
 </header>
 

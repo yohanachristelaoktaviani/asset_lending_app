@@ -2,54 +2,55 @@
 
 <h1>Item Detail</h1>
 
-<table>
+<div class="container8">
+<div class="container-detail-item">
+<div class="image-container mt-4">
+<% if @item.image.attached? %>
+  <%= image_tag @item.image, class: "imageee" %>
+<% else %>
+  <%= image_tag 'unknown-item.jpg', class: "imageee" %>
+<% end %>
+</div>
+
+<div class="container5 mt-4">
+<div class="button-container">
+  <%= button_to "Edit", edit_item_path, method: 'get', class: "button1 btn btn-warning text-light" %>
+  <%= button_to "Delete", item_path, method: 'delete', data: { confirm: "Are you sure for delete this item?" }, class: "button7 btn btn-danger" %>
+</div>
+
+<table class="table tablestat">
   <tr>
-    <td><%= button_to "Edit", edit_item_path, method: 'get', class: "button1 btn btn-outline-primary" %></td>
-    <td><%= button_to "Delete", item_path, method: 'delete',
-    data: { confirm: "Are you sure for delete this item?" }, class: "button7 btn btn-outline-danger" %></td>
+    <th>Code</th>
+    <td>:</td>
+    <td><%= @item.code %></td>
+  </tr>
+  <tr>
+    <th>Merk</th>
+    <td>:</td>
+    <td><%= @item.merk %></td>
+  </tr>
+  <tr>
+    <th class="w-50">Vendor Name</th>
+    <td>:</td>
+    <td><%= @item.vendor_name %></td>
+  </tr>
+  <tr>
+    <th>Condition</th>
+    <td>:</td>
+    <td><%= @item.condition %></td>
+  </tr>
+  <tr>
+    <th>Status</th>
+    <td>:</td>
+    <td><%= @item.status %></td>
+  </tr>
+  <tr>
+    <th>Description</th>
+    <td>:</td>
+    <td class="w-100"><%= simple_format(@item.description) %></td>
   </tr>
 </table>
-
-
-<div class="container3">
-<div class="container4">
-<%= image_tag @item.image, class:"imageee"%>
 </div>
 </div>
-
-
-<div class="container5">
-<h3 class="font-item"><%= @item.name.upcase %></h3>
-  <table class="table tablestat" style="width:75%">
-      <tr>
-        <th>Code</th>
-        <td>:</td>
-        <td><%= @item.code%></td>
-      </tr>
-      <tr>
-        <th>Merk</th>
-        <td>:</td>
-        <td><%= @item.merk%></td>
-      </tr>
-      <tr>
-        <th>Vendor Name</th>
-        <td>:</td>
-        <td><%= @item.vendor_name%></td>
-      </tr>
-      <tr>
-        <th>Condition</th>
-        <td>:</td>
-        <td><%= @item.condition%></td>
-      </tr>
-      <tr>
-        <th>Status</th>
-        <td>:</td>
-        <td><%= @item.status%></td>
-      </tr>
-      <tr>
-        <th>Description</th>
-        <td>:</td>
-        <td><%= @item.description%></td>
-      </tr>
-  </table>
+</div>
 </div>

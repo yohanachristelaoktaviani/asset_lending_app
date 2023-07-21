@@ -1,0 +1,70 @@
+<% provide(:title, "Loan Item") %>
+
+<% if flash[:errors] %>
+  <div class="alert alert-danger">
+    <ul>
+      <% flash[:errors].each do |error| %>
+        <li><%= error %></li>
+      <% end %>
+    </ul>
+  </div>
+<% end %>
+
+<div class="form2">
+  <div class="font-edit">
+    <h2>Show Loan</h2>
+    <% if @loan_item.asset_loan_items.pluck(:loan_status).all? { |status| status == "accepted"} %>
+      <%= link_to "Return", new_user_asset_return_path(@loan_item.id), method: 'get', class: "btn btn-lg btn-primary"%>
+    <% elsif @loan_item.asset_loan_items.pluck(:loan_status).all? { |status| status == "decline"} %>
+
+    <% elsif @loan_item.asset_loan_items.pluck(:loan_status).all? { |status| status == "waiting"} %>
+      <%= link_to "Return", new_user_asset_return_path(@loan_item.id), method: 'get', class: "btn btn-lg btn-primary"%>
+      <%= link_to "Edit Loan", edit_user_asset_loan_path(@loan_item.id), method: 'get', class: "btn btn-lg btn-warning"%>
+    <% end %>
+
+  </div>
+  <table class="table tablestat">
+    <tr>
+      <th>Code</th>
+      <td>:</td>
+      <td><%= @loan_item.code %></td>
+    </tr>
+    <tr>
+      <th>Merk</th>
+      <td>:</td>
+      <td><%= @loan_item.loan_item_datetime %></td>
+    </tr>
+    <tr>
+      <th>Return Estimation Datetime</th>
+      <td>:</td>
+      <td><%= @loan_item.return_estimation_datetime %></td>
+    </tr>
+  </table>
+
+  <h2>Items</h2>
+  <hr>
+  <table class="table table-bordered table-striped table-hover w-100">
+    <thead>
+    </thead>
+    <tbody id="asset_loan_items">
+      <% @index = 0 %>
+      <% @loan_item.asset_loan_items.each do |asset_loan_item| %>
+        <tr>
+          <td><%= asset_loan_item.item.image %></td>
+          <td><%= asset_loan_item.item.name %></td>
+          <td>
+            <% if asset_loan_item.loan_status == "accepted" %>
+              <span class="badge rounded-pill bg-success"><%= asset_loan_item.loan_status %></span>
+            <% elsif asset_loan_item.loan_status == "decline" %>
+              <span class="badge rounded-pill bg-danger"><%= asset_loan_item.loan_status %></span>
+            <% elsif asset_loan_item.loan_status == "waiting" %>
+              <span class="badge rounded-pill bg-warning"><%= asset_loan_item.loan_status %></span>
+            <% elsif asset_loan_item.loan_status == "cancel" %>
+              <span class="badge rounded-pill bg-secondary"><%= asset_loan_item.loan_status %></span>
+            <% end %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>

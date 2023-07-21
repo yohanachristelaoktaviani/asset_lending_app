@@ -7,7 +7,7 @@ class CreateItems < ActiveRecord::Migration[6.1]
       t.string :condition, limit: 50
       t.string :vendor_name, limit: 50
       t.string :status, limit: 50
-      t.string :description, limit: 300
+      t.text   :description
       t.string :image, limit: 300
 
       t.timestamps

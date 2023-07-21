@@ -2,105 +2,113 @@
 
 <h1>Loan Item Detail</h1>
 
-<table>
-  <tr>
-    <td><%= button_to "Accepted", accept_asset_loans_item_path , method: 'post', class: "button5 btn btn-outline-success" %></td>
-    <td><%= button_to "Cancel", cancel_asset_loans_item_path , method: 'post', class: "button3 btn btn-outline-primary", disabled: @loan_item.loan_status == 'waiting' %></td>
-    <td>
-      <%= link_to "Decline", "#myModal", class: "button6 btn btn-outline-danger#{' disabled' if @loan_item.loan_status == 'accepted'}", "data-toggle" => "modal" %>
-    </td>
-    </tr>
-</table>
-
-<div id="myModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-          <button type="button" class="close"  data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-          <h3 id="myModalLabel">Input Evidence</h3>
+<div class="container8">
+  <div class="container-detail-item">
+    <div class="image-container mt-4">
+      <%= image_tag @loan_item.item.image, class:"imageee"%>
+    </div>
+    <div class="container5 mt-4">
+      <div class="button-container">
+      <table>
+        <tr>
+          <td><%= button_to "Accepted", accept_asset_loans_item_path , method: 'post', class: "button5 btn btn-success" %></td>
+          <td><%= button_to "Cancel", cancel_asset_loans_item_path , method: 'post', class: "button3 btn btn-primary", disabled: @loan_item.loan_status == 'waiting' %></td>
+          <td>
+            <%= link_to "Decline", "#myModal", class: "button6 btn btn-danger#{' disabled' if @loan_item.loan_status == 'accepted' || @loan_item.loan_status == 'decline' }", "data-toggle" => "modal" %>
+          </td>
+          </tr>
+      </table>
+      </div>
+      <div id="myModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close"  data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+                <h3 id="myModalLabel">Input Evidence</h3>
+                </div>
+                <div class="modal-body">
+                  <form id="evidenceForm" action="<%= decline_asset_loans_item_path(@loan_item) %>" method="POST">
+                  <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+                <div class="form-group">
+                  <label for="message-text" class="col-form-label">Message:</label>
+                  <textarea class="form-control" id="message-text" name="evidence"></textarea>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" id="close-modal" data-dismiss="modal">Close</button>
+                  <button type="submit" class="btn btn-primary">Save changes</button>
+                </div>
+              </form>
+            </div>
           </div>
-          <div class="modal-body">
-            <form id="evidenceForm" action="<%= decline_asset_loans_item_path(@loan_item) %>" method="POST">
-            <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
-          <div class="form-group">
-            <label for="message-text" class="col-form-label">Message:</label>
-            <textarea class="form-control" id="message-text" name="evidence"></textarea>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            <button type="submit" class="btn btn-primary">Save changes</button>
-          </div>
-        </form>
+        </div>
+      </div>
+      <h3 class="font-item"><%= @loan_item.asset_loan.code %></h3>
+        <table class="table tablestat">
+            <tr>
+              <th>Item</th>
+              <td>:</td>
+              <td><%= @loan_item.item.name%></td>
+            </tr>
+            <tr>
+              <th>Item ID</th>
+              <td>:</td>
+              <td><%= @loan_item.item.code%></td>
+            </tr>
+            <tr>
+              <th>User</th>
+              <td>:</td>
+              <td><%= @loan_item.asset_loan.user.name%></td>
+            </tr>
+            <tr>
+              <th>Loan Date</th>
+              <td>:</td>
+              <td><%= @loan_item.asset_loan.loan_item_datetime.localtime.strftime("%Y-%m-%d %H:%M:%S")%></td>
+            </tr>
+            <tr>
+              <th class="w-50">Return Estimation Date</th>
+              <td>:</td>
+              <td><%= @loan_item.asset_loan.return_estimation_datetime.localtime.strftime("%Y-%m-%d %H:%M:%S")%></td>
+            </tr>
+            <tr>
+              <th>Item Condition</th>
+              <td>:</td>
+              <td><%= @loan_item.item.condition%></td>
+            </tr>
+            <tr>
+              <th>Necessary</th>
+              <td>:</td>
+              <td><%= @loan_item.asset_loan.necessary%></td>
+            </tr>
+            <tr>
+              <th>Admin</th>
+              <td>:</td>
+              <td>
+              <%=
+                if @loan_item.admin.present?
+                  @loan_item.admin.name
+                else
+                  ""
+                end
+              %>
+              </td>
+            </tr>
+            <tr>
+              <th>Loan Status</th>
+              <td>:</td>
+              <td><%= @loan_item.loan_status%></td>
+            </tr>
+            <tr>
+              <th>Evidence</th>
+              <td>:</td>
+              <td class="w-100"><%= @loan_item.evidence%></td>
+            </tr>
+        </table>
+        </div>
       </div>
     </div>
   </div>
-</div>
-
-
-<div class="container3">
-<div class="container4">
-<%= image_tag @loan_item.item_name.image, class:"imageee"%>
-</div>
-</div>
-
-
-<div class="container6">
-<h3 class="font-item"><%= @loan_item.asset_loan.code %></h3>
-  <table class="table tablestat" style="width:150%">
-      <tr>
-        <th>Item</th>
-        <td>:</td>
-        <td><%= @loan_item.item_name.name%></td>
-      </tr>
-      <tr>
-        <th>Item ID</th>
-        <td>:</td>
-        <td><%= @loan_item.item_name.code%></td>
-      </tr>
-      <tr>
-        <th>User</th>
-        <td>:</td>
-        <td><%= @loan_item.asset_loan.user.name%></td>
-      </tr>
-      <tr>
-        <th>Loan Date</th>
-        <td>:</td>
-        <td><%= @loan_item.asset_loan.loan_item_datetime%></td>
-      </tr>
-      <tr>
-        <th>Return Estimation Date</th>
-        <td>:</td>
-        <td><%= @loan_item.asset_loan.return_estimation_datetime%></td>
-      </tr>
-      <tr>
-        <th>Item Condition</th>
-        <td>:</td>
-        <td><%= @loan_item.item_condition.condition%></td>
-      </tr>
-      <tr>
-        <th>Necessary</th>
-        <td>:</td>
-        <td><%= @loan_item.asset_loan.necessary%></td>
-      </tr>
-      <tr>
-        <th>Admin</th>
-        <td>:</td>
-        <td><%= @loan_item.admin.name%></td>
-      </tr>
-      <tr>
-        <th>Loan Status</th>
-        <td>:</td>
-        <td><%= @loan_item.loan_status%></td>
-      </tr>
-      <tr>
-        <th>Evidence</th>
-        <td>:</td>
-        <td><%= @loan_item.evidence%></td>
-      </tr>
-  </table>
-</div>
 
 <script>
 $(document).ready(function() {
@@ -108,14 +116,14 @@ $(document).ready(function() {
       show: false // Hide the modal by default
     });
 
-    $('.btn-outline-danger').click(function() {
+    $('.btn-danger').click(function() {
       $('#myModal').modal('show'); //Show the modal when the Decline button is clicked
     });
 
-    $('.modal-footer button[data-dismiss="modal"]').click(function() {
+    $('button[data-dismiss="modal"]').click(function() {
       console.log("Close button clicked");
-      $('#myModal').modal('hide'); // Hide the modal when the Close button is clicked
-    });
+      $('.modal').modal('hide'); // Hide the modal when the Close button is clicked
+      });
   });
 </script>
 

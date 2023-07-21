@@ -5,3 +5,4 @@
 //= require bootstrap
 //= require_tree
 //= require activestorage
+//= require vanilla_nested

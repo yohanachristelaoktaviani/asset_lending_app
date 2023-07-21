@@ -1,6 +1,8 @@
 <% provide(:title, "Dashboard") %>
 
-<h1>Items Index</h1>
+<div class="form">
+  <div class="container8 mb-5">
+<h1 class="pb-0 mb-2">Item</h1>
 
 <% if flash[:success] %>
 <div class="alert alert-success">
@@ -14,14 +16,29 @@
 </div>
 <% end %>
 
-
-<table>
+<div class="table-responsive mb-5">
+<table class="table borderless mb-5">
   <tr>
     <td><%= button_to "Create", new_item_path, method: 'get', class: "button2 btn btn-primary" %></td>
-    </tr>
+    <td><%= link_to 'Export Data', {controller: 'items', action: 'export_item', format: 'csv'}, id: 'export-csv-link', class:'button8 btn btn-info text-light', :format => 'csv', download: 'export_data.csv'%></td>
+    <td>
+    <div class="table-container">
+      <%= form_tag items_path, method: 'get' do %>
+          <div class="input-group mx-1 search">
+            <div class="container-icon">
+              <span class="search-icon"><i class="fa fa-search"></i></span>
+            </div>
+            <%= text_field_tag :search, params[:search], placeholder: 'Type here...', class: "form-control search-box" %>
+            <span class="input-group-btn">
+              <%= submit_tag "Search", class: "btn btn-secondary search-button" %>
+            </span>
+            </div>
+      <% end %>
+    </td>
+  </tr>
 </table>
 
-<table class="table table-bordered table-striped table-hover w-100 center">
+<table class="table table-bordered center table-item table-responsive my-0 ">
   <thead class="thead">
     <tr>
       <th class="th">Item ID</th>
@@ -37,15 +54,31 @@
   <tbody>
   <% @items.each do |item| %>
       <tr>
-          <td style="text-align:left"><%= link_to item.code, item_path(item) %></td>
+          <td><%= link_to item.code, item_path(item) %></td>
           <td><%= item.name %></td>
           <td><%= item.merk %></td>
           <td><%= item.vendor_name %></td>
-          <td><%= item.condition %></td>
-          <td><%= item.status %></td>
-          <td><%= item.description %></td>
+          <td>
+            <% if item.condition == "good" %>
+              <span class="badge rounded-pill bg-success"><%= item.condition %></span>
+            <% elsif item.condition == "damage" %>
+              <span class="badge rounded-pill bg-warning"><%= item.condition %></span>
+            <% elsif item.condition == "unusable" %>
+              <span class="badge rounded-pill bg-danger"><%= item.condition %></span>
+            <% end %>
+          </td>
+          <td>
+          <% if item.status == "available" %>
+            <span class="badge rounded-pill bg-info"><%= item.status %></span>
+          <% elsif item.status == "unavailable" %>
+            <span class="badge rounded-pill bg-dark"><%= item.status %></span>
+          <% end %>
+          </td>
+          <td class="description-column"><%= simple_format(item.description)  %></td>
           <td><% if item.image.attached? %>
               <%= image_tag item.image, class:"imagee"%>
+              <% else %>
+              <%= image_tag 'unknown-item.jpg', class:"imagee" %>
               <% end %>
           </td>
 
@@ -54,5 +87,10 @@
 
   </tbody>
 </table>
+</div>
+<%= paginate @items, :window => 3 %>
+</div>
+</div>
+
 
 

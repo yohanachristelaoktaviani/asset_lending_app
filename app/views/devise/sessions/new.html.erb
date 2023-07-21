@@ -1,37 +1,60 @@
 <% provide(:title, "Log in") %>
 
-<div class="container1">
-<div class="header-form">
-  <h2 class="header-form">Log in</h2>
-  <hr>
+<% if flash[:success] %>
+<div class="alert alert-success">
+  <%= flash[:success] %>
 </div>
-
-<%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
-  <div class="form-align">
-  <div class="field">
-    <%= f.label :email %><br />
-    <%= f.email_field :email, autofocus: true, autocomplete: "email", class:"textbox" %>
-  </div>
-
-  <div class="field">
-    <%= f.label :password %><br />
-    <%= f.password_field :password, autocomplete: "current-password", class:"textbox" %>
-  </div>
-
-  <% if devise_mapping.rememberable? %>
-    <div class="field">
-      <%= f.check_box :remember_me %>
-      <%= f.label :remember_me %>
-    </div>
-  <% end %>
-
-
-  <div class="actions field">
-    <%= f.submit "Log in", class:"btn btn-primary"%>
-  </div>
-  </div>
-  <hr>
 <% end %>
+
+<% if flash[:errors] %>
+<div class="alert alert-danger">
+  <%= flash[:errors] %>
+</div>
+<% end %>
+
+<div class="container8">
+  <div class="container-img">
+    <div class="container1">
+        <h1 class="header-form login-font mb-4">SIPAS</h1>
+        <div class="center">
+        <span class="badge rounded-pill bg-primary bg-opacity-10 text-dark center mb-3">
+        <h6 class="login-font center my-2">Sistem Peminjaman Aset</h6>
+        </span>
+        </div>
+        <p class="login-page-font text-muted mb-0">Login Page</p>
+        <hr class="mt-1">
+
+      <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
+        <div class="form-align mx-0">
+          <div class="field input-group mx-0">
+          <div class="container-icon-login">
+            <span class="search-icon"><i class="fa fa-user login-font"></i></span>
+          </div>
+            <%= f.email_field :email, autofocus: true, autocomplete: "email", placeholder: 'Username', class:"form-control login-box" %>
+          </div>
+          <div class="field input-group mx-0">
+          <div class="container-icon-login">
+            <span class="search-icon"><i class="fa fa-key login-font"></i></span>
+          </div>
+            <%= f.password_field :password, autocomplete: "current-password", placeholder: 'Password', class:"form-control login-box" %>
+          </div>
+          <% if devise_mapping.rememberable? %>
+            <div class="field">
+              <%= f.check_box :remember_me %>
+              <%= f.label :remember_me, class:"remember-font" %>
+            </div>
+          <% end %>
+          <div class="actions field">
+            <%= f.submit "Log in", class:"btn login-button w-100"%>
+          </div>
+        </div>
+
+      <% end %>
+    </div>
+    <div class="container-img-login py-4">
+      <%=image_tag("login1.jpg", class:'w-100 mx-5')%>
+    </div>
+  </div>
 </div>
 
 

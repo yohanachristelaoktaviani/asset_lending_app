@@ -1,0 +1,50 @@
+<% @index ||= 0 %>
+<% if action_name == 'new' %>
+  <tr class="fields">
+    <td>
+      <%= form.hidden_field :loan_status, value: "waiting" %>
+      <%= form.collection_select :item_id, @items, :id, :name, { prompt: '--Select--' } %>
+    </td>
+    <td class="text-center">
+        <%= link_to_remove_nested(form, link_classes: 'btn btn-danger btn-lg', fields_wrapper_selector: '.fields') do %>
+          <i class="fa-solid fa-trash"></i>
+        <% end %>
+      <% @index = @index + 1 %>
+    </td>
+  </tr>
+
+<% elsif action_name == 'edit' %>
+  <% if @loan_item.asset_loan_items[@index].loan_status.present? %>
+    <tr class="fields">
+      <td>
+        <% if @loan_item.asset_loan_items[@index].loan_status == "accepted" %>
+          <%= form.hidden_field :loan_status, value: "accepted" %>
+          <%= form.hidden_field :item_id, value: @loan_item.asset_loan_items[@index].item.id %>
+          <%= form.collection_select :item_id, @items, :id, :name, { prompt: '--Select--' }, disabled: true %>
+        <% elsif @loan_item.asset_loan_items[@index].loan_status == "waiting" %>
+          <%= form.hidden_field :loan_status, value: "waiting" %>
+          <%= form.collection_select :item_id, @items, :id, :name, { prompt: '--Select--' } %>
+        <% end %>
+      </td>
+      <td class="text-center">
+        <% if @loan_item.asset_loan_items.count > 1 %>
+          <% if @loan_item.asset_loan_items[@index].loan_status == "waiting" %>
+            <%= link_to_remove_nested(form, link_classes: 'btn btn-danger btn-lg', fields_wrapper_selector: '.fields') do %>
+              <i class="fa-solid fa-trash"></i>
+            <% end %>
+          <% elsif @loan_item.asset_loan_items[@index].loan_status == "accepted" %>
+            <%= button_tag class: 'btn btn-danger btn-lg', disabled: true do %>
+              <i class="fa-solid fa-trash"></i>
+            <% end %>
+          <% end %>
+        <% else %>
+          <%= button_tag class: 'btn btn-danger btn-lg', disabled: true do %>
+            <i class="fa-solid fa-trash"></i>
+          <% end %>
+        <% end %>
+        <% @index = @index + 1 %>
+      </td>
+    </tr>
+  <% end %>
+
+<% end %>

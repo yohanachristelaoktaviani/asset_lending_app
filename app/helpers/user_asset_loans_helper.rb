@@ -1,0 +1,2 @@
+module UserAssetLoansHelper
+end

@@ -1,0 +1,16 @@
+
+[1mFrom:[0m /home/yohanachristelaoktaviani/asset_lending/app/controllers/user_asset_returns_controller.rb:38 UserAssetReturnsController#create:
+
+    [1;34m35[0m: [32mdef[0m [1;34mcreate[0m
+    [1;34m36[0m:   binding.pry
+    [1;34m37[0m:   @asset_return = [1;34;4mAssetReturn[0m.new(return_params)
+ => [1;34m38[0m:   [32mif[0m @asset_return.save
+    [1;34m39[0m:     flash[[33m:success[0m] = [31m[1;31m"[0m[31mNew return item was successfully created[1;31m"[0m[31m[0m
+    [1;34m40[0m:     redirect_to user_asset_returns_path(@asset_return)
+    [1;34m41[0m:   [32melse[0m
+    [1;34m42[0m:     [1;34m# puts 'ERROR ', @pokemon.errors.full_messages[0m
+    [1;34m43[0m:     [1;34m# flash[:danger] = @pokemon.errors.full_messages[0m
+    [1;34m44[0m:     redirect_to user_asset_returns_path
+    [1;34m45[0m:   [32mend[0m
+    [1;34m46[0m: [32mend[0m
+

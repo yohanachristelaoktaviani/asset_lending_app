@@ -2,30 +2,32 @@
 
 <h1>Return Item Detail</h1>
 
-<table>
-  <tr>
-    <td><%= button_to "Received", received_asset_return_item_path , method: 'post', class: "button2 btn btn-outline-success" %></td>
-    </tr>
-</table>
+<div class="container8">
+  <div class="container-detail-item">
+    <div class="image-container mt-4">
+      <%= image_tag @return_item.item.image, class:"imageee"%>
+    </div>
 
-<div class="container3">
-<div class="container4">
-<%= image_tag @return_item.item_name.image, class:"imageee"%>
-</div>
-</div>
+    <div class="container5 mt-4">
+    <div class="button-container-return">
+    <table>
+      <tr>
+        <td><%= button_to "Received", received_asset_return_item_path , method: 'post', class: "button2 btn btn-success w-100" %></td>
+      </tr>
+    </table>
+  </div>
 
-<div class="container6">
 <h3 class="font-item"><%= @return_item.asset_return.code %></h3>
-  <table class="table tablestat" style="width:150%">
+  <table class="table tablestat">
       <tr>
         <th>Item</th>
         <td>:</td>
-        <td><%= @return_item.item_name.name%></td>
+        <td><%= @return_item.item.name%></td>
       </tr>
       <tr>
         <th>Item ID</th>
         <td>:</td>
-        <td><%= @return_item.item_name.code%></td>
+        <td><%= @return_item.item.code%></td>
       </tr>
       <tr>
         <th>User</th>
@@ -35,22 +37,29 @@
       <tr>
         <th>Actual Return Date</th>
         <td>:</td>
-        <td><%= @return_item.asset_return.actual_return_datetime%></td>
+        <td><%= @return_item.asset_return.actual_return_datetime.localtime.strftime("%Y-%m-%d %H:%M:%S")%></td>
       </tr>
       <tr>
         <th>Actual Item Condition</th>
         <td>:</td>
-        <td><%= @return_item.item_condition.condition%></td>
+        <td><%= @return_item.item.condition%></td>
       </tr>
       <tr>
         <th>Return Status</th>
         <td>:</td>
-        <td><%= @return_item.return_status%></td>
+        <td><%= @return_item.asset_return.return_status%></td>
       </tr>
       <tr>
         <th>Admin</th>
         <td>:</td>
-        <td><%= @return_item.admin.name%></td>
+        <td>
+          <%=
+          if @return_item.admin.present?
+            @return_item.admin.name
+          else
+            ""
+          end %>
+        </td>
       </tr>
       <tr>
         <th>Status</th>
@@ -58,4 +67,6 @@
         <td><%= @return_item.status%></td>
       </tr>
   </table>
+</div>
+</div>
 </div>

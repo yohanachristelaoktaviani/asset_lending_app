@@ -1,16 +1,19 @@
 <% provide(:title, "User Detail") %>
 <br>
 
-<div class="form2">
+<div class="container9 mb-4">
+<div class="form3">
 <h1 style="text-align:left" >User Detail</h1>
 <hr>
+<div class="button-container mx-3">
 <table>
   <tr>
-    <td><%= button_to "Edit", edit_user_path, method: 'get', class: "button1 btn btn-outline-primary" %></td>
-    <td><%= button_to "Delete", user_path, method: 'delete',
-    data: { confirm: "Are you sure for delete this user?" }, class: "button7 btn btn-outline-danger" %></td>
+    <td><%= button_to "Edit", edit_user_path, method: 'get', class: "button1 btn btn-warning text-light" %></td>
+    <td class="px-4"><%= button_to "Delete", user_path, method: 'delete',
+    data: { confirm: "Are you sure for delete this user?" }, class: "button7 btn btn-danger" %></td>
   </tr>
 </table>
+</div>
 
   <table class="table tablestat" style="width:100%">
       <tr>
@@ -44,4 +47,5 @@
         <td><%= @user.role%></td>
       </tr>
   </table>
+</div>
 </div>

@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html>
   <head>
     <title><%= full_title(yield(:title)) %></title>
@@ -8,16 +9,35 @@
 
     <%= stylesheet_link_tag "application", media: 'all', "data-turbo-track": "reload" %>
     <%= javascript_include_tag "application" %>
+
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
   </head>
 
   <body>
   <%= render 'layouts/header' %>
     <div class="container">
-      <p class="notice"><%= notice %></p>
-      <p class="alert"><%= alert %></p>
+    <div id="message">
+    <br>
+    <br>
+    <p>
+    <% if notice %>
+      <div  class="alert alert-success" role="alert">
+        <%= notice %>
+      </div>
+    <% end %>
+    </p>
+    <p>
+    <% if alert %>
+      <div class="alert alert-danger" role="alert">
+        <%= alert %>
+      </div>
+    <% end %>
+    </p>
+    </div>
       <%= yield %>
     </div>
-
   </body>
   <%= render 'layouts/footer' %>
 </html>

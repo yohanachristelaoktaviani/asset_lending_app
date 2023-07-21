@@ -1,0 +1,64 @@
+<% provide(:title, "Loan Item") %>
+
+<% if flash[:errors] %>
+  <div class="alert alert-danger">
+    <ul>
+      <% flash[:errors].each do |error| %>
+        <li><%= error %></li>
+      <% end %>
+    </ul>
+  </div>
+<% end %>
+
+<div class="form2">
+  <div class="font-edit">
+    <h2>Edit Loan</h2>
+    <%= button_to "Delete Loan", asset_loan_path, method: 'delete',data: { confirm: "Are you sure for delete this item?" }, class: "btn btn-lg btn-danger", disabled: (@status.include?("accepted"))%>
+  </div>
+  <%= form_for @loan_item do |form| %>
+    <div class="font-user">
+      <hr>
+      <p>
+        <%= form.label :code, class:"tlabel" %>
+        <%= form.text_field :code, value: @loan_item.code, class:"textbox2", readonly: true, disabled: true %>
+      </p>
+      <p>
+        <%= form.label :loan_item_datetime, class:"tlabel" %>
+        <%= form.text_field :loan_item_datetime, class:"textbox2", disabled: true%>
+      </p>
+      <p>
+        <%= form.label :return_estimation_datetime, class:"tlabel" %>
+        <%= form.text_field :return_estimation_datetime, class:"textbox2", id:"datetime", disabled: (@status.include?("accepted")) %>
+      </p>
+    </div>
+
+    <h2>Items</h2>
+    <hr>
+    <table class="table table-bordered table-striped table-hover w-100">
+      <thead>
+      </thead>
+      <tbody id="asset_loan_items">
+        <% @index = 0 %>
+        <%= form.fields_for :asset_loan_items do |fs| %>
+          <%= render "asset_loan_item_fields", form: fs %>
+        <% end %>
+      </tbody>
+    </table>
+    <%= form.submit "Submit", class: "btn-add-skill btn btn-primary btn-lg w-50" %>
+</div>
+<script>
+  $(function() {
+    $('input[id="datetime"]').daterangepicker({
+      "singleDatePicker": true,
+      "timePicker": true,
+      "timePicker24Hour": true,
+      "minDate": '<%= @return_datetime %>',
+      locale: {
+        format: 'MM/DD/YYYY kk:mm'
+      }
+    }, function(start, end, label) {
+      console.log('New date range selected: ' + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD'));
+    });
+  });
+</script>
+<% end %>

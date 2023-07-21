@@ -5,6 +5,7 @@ class CreateAssetReturns < ActiveRecord::Migration[6.1]
       t.datetime :actual_return_datetime
       t.references :asset_loan, null: false, foreign_key: {to_table: :asset_loans}
       t.integer  :user_id
+      t.string :return_status, limit: 50
 
 
       t.timestamps

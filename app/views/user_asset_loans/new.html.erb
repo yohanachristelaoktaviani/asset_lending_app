@@ -1,0 +1,73 @@
+<% provide(:title, "Loan Item") %>
+
+<% if flash[:errors] %>
+  <div class="alert alert-danger">
+    <ul>
+      <% flash[:errors].each do |error| %>
+        <li><%= error %></li>
+      <% end %>
+    </ul>
+  </div>
+<% end %>
+
+<div class="form2">
+  <div class="font-edit">
+    <h2>New Loan</h2>
+  </div>
+  <%= form_for @loan_item do |form| %>
+    <div class="font-user">
+      <hr>
+      <p>
+        <%= form.label :code, class:"tlabel" %>
+        <%= form.text_field :code, value: @loan_item.code, class:"textbox2", readonly: true, disabled: true %>
+      </p>
+      <p>
+        <%= form.label :loan_item_datetime, class:"tlabel" %>
+        <%= form.text_field :loan_item_datetime, class:"textbox2", id:"datetime" %>
+      </p>
+      <p>
+        <%= form.label :return_estimation_datetime, class:"tlabel" %>
+        <%= form.text_field :return_estimation_datetime, class:"textbox2", id:"datetime" %>
+      </p>
+      <br>
+        <p>
+          <%= form.label :necessary, class:"tlabel" %>
+          <%= form.text_field :necessary, class:"textbox2"%>
+        </p>
+
+    </div>
+
+    <h2>Items</h2>
+    <hr>
+    <table class="table table-bordered table-striped table-hover w-100 mb-0">
+      <thead>
+      </thead>
+      <tbody id="asset_loan_items">
+        <%= form.fields_for :asset_loan_items do |fs| %>
+
+        <% end %>
+        <p class="links">
+           <%= link_to_add_nested(form, :asset_loan_items, '#asset_loan_items', link_text: 'Add Item', link_classes: 'btn btn-success btn-lg') %>
+        </p>
+      </tbody>
+    </table>
+    <p>
+      <%= form.submit "Submit", class: "btn-add-skill btn btn-primary btn-lg w-50", style:"margin-top:20px" %>
+    </p>
+</div>
+<script>
+  $(function() {
+    $('input[id="datetime"]').daterangepicker({
+      "singleDatePicker": true,
+      "timePicker": true,
+      "timePicker24Hour": true,
+      "minDate": moment(),
+      locale: {
+        format: 'MM/DD/YYYY kk:mm'
+      }
+    }, function(start, end, label) {
+      console.log('New date range selected: ' + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD'));
+    });
+  });
+</script>
+<% end %>

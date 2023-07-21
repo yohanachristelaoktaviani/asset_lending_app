@@ -68,7 +68,6 @@ ActiveRecord::Schema.define(version: 2023_06_12_102753) do
   end
 
   create_table "asset_return_items", force: :cascade do |t|
-    t.string "return_status", limit: 50
     t.bigint "asset_return_id", null: false
     t.bigint "item_id", null: false
     t.string "actual_item_condition", limit: 50
@@ -87,6 +86,7 @@ ActiveRecord::Schema.define(version: 2023_06_12_102753) do
     t.integer "user_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "return_status", limit: 50
     t.index ["asset_loan_id"], name: "index_asset_returns_on_asset_loan_id"
   end
 
@@ -104,7 +104,7 @@ ActiveRecord::Schema.define(version: 2023_06_12_102753) do
     t.string "condition", limit: 50
     t.string "vendor_name", limit: 50
     t.string "status", limit: 50
-    t.string "description", limit: 300
+    t.text "description"
     t.string "image", limit: 300
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
