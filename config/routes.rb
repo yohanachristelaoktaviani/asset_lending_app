@@ -41,8 +41,8 @@ Rails.application.routes.draw do
       get :export_loan, defaults: { format: :csv }
     end
   end
-  resources :asset_return_items, except: :new do
-    # post 'new/:id', to: ''
+  resources :asset_return_items do
+
     post :received, on: :member
     delete :destroy_aset, on: :collection
     collection do
@@ -55,8 +55,11 @@ Rails.application.routes.draw do
   resources :user_asset_loans
 
   resources :user_asset_returns do
+
     delete :destroy_aset, on: :collection
   end
+
+  # post '/user_asset_returns/new/:id', to: 'user_asset_returns#create', as: :new_user_asset_return
 
   resources :asset_return
 

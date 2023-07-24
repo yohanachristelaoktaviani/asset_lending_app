@@ -14,16 +14,17 @@
   <div class="font-edit">
     <h2>Show Loan</h2>
     <% if @loan_item.asset_loan_items.pluck(:loan_status).all? { |status| status == "accepted"} %>
-      <%= link_to "Return", new_user_asset_return_path(@loan_item.id), method: 'get', class: "btn btn-lg btn-primary"%>
+      <% @loan_item_id = @loan_item.id %>
+      <%= link_to "Return", new_user_asset_return_path(loan_item_id: @loan_item_id), :controller => "user_asset_returns", :action => "new", :id => @loan_item.id , method: 'get', class: "btn btn-lg btn-primary"%>
     <% elsif @loan_item.asset_loan_items.pluck(:loan_status).all? { |status| status == "decline"} %>
 
     <% elsif @loan_item.asset_loan_items.pluck(:loan_status).all? { |status| status == "waiting"} %>
-      <%= link_to "Return", new_user_asset_return_path(@loan_item.id), method: 'get', class: "btn btn-lg btn-primary"%>
+    <% @loan_item_id = @loan_item.id %>
       <%= link_to "Edit Loan", edit_user_asset_loan_path(@loan_item.id), method: 'get', class: "btn btn-lg btn-warning"%>
     <% end %>
 
   </div>
-  <table class="table tablestat">
+  <table class="table tablestat w-100">
     <tr>
       <th>Code</th>
       <td>:</td>
@@ -43,15 +44,15 @@
 
   <h2>Items</h2>
   <hr>
-  <table class="table table-bordered table-striped table-hover w-100">
+  <table class="table table-bordered table-striped table-hover w-100 center">
     <thead>
     </thead>
     <tbody id="asset_loan_items">
       <% @index = 0 %>
       <% @loan_item.asset_loan_items.each do |asset_loan_item| %>
         <tr>
-          <td><%= asset_loan_item.item.image %></td>
-          <td><%= asset_loan_item.item.name %></td>
+          <td><%= image_tag asset_loan_item.item.image, class:"imagee" %></td>
+          <td class="font-user-loan"><%= asset_loan_item.item.name%></td>
           <td>
             <% if asset_loan_item.loan_status == "accepted" %>
               <span class="badge rounded-pill bg-success"><%= asset_loan_item.loan_status %></span>
