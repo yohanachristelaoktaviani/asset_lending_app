@@ -28,7 +28,7 @@ class UsersController < ApplicationController
   end
 
   def index
-    @users = User.order('code ASC').page(params[:page]).per(5)
+    @users = User.order('code ASC').page(params[:page]).per(4)
     if params[:search].present?
       search_term = "%#{params[:search].downcase}%"
       @users = @users.includes(:department).includes(:position)

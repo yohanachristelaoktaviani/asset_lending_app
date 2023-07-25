@@ -5,7 +5,7 @@ class ItemsController < ApplicationController
   before_action :authenticate_user!, except: [:main]
 
   def index
-    @items = Item.order('code ASC').page(params[:page]).per(5)
+    @items = Item.order('code ASC').page(params[:page]).per(4)
     if params[:search].present?
       # regex to handle search using coma/ spaces
       search_terms = params[:search].split(/[,\s]+/)

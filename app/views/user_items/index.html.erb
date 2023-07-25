@@ -35,7 +35,7 @@
   </tr>
 </table>
 
-<table class="table table-bordered table-striped table-hover w-100 center">
+<table class="table table-bordered w-100 center">
   <thead class="thead">
     <tr>
       <th class="th">Item ID</th>
@@ -61,7 +61,7 @@
               <span class="badge rounded-pill bg-danger"><%= item.condition %></span>
             <% end %>
           </td>
-          <td><%= simple_format(item.description) %></td>
+          <td class="description-column"><%= simple_format(item.description) %></td>
           <td><% if item.image.attached? %>
               <%= image_tag item.image, class:"imagee"%>
               <% else %>

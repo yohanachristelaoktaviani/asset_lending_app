@@ -1,7 +1,6 @@
 <% provide(:title, "Asset Loans") %>
 <div class="form">
-<br>
-<div class="container9 mb-4">
+<div class="container9 mb-5">
 <h1 class="pb-0 mb-2">Loan Item</h1>
 
 <% if flash[:success] %>
@@ -17,7 +16,7 @@
 <% end %>
 
 <div class="table-responsive w-100 mb-5">
-<table class="table borderless w-100 mb-5">
+<table class="table borderless w-100 mb-5 mt-4">
   <tr>
   <td><%= link_to 'Export Data', export_loan_asset_loans_items_path(format: :csv), id: 'export-csv-link',  class: 'button-export btn btn-info text-light', :format => 'csv', download: 'export_data.csv' %></td>
     <td>

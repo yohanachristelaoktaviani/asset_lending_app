@@ -17,7 +17,7 @@
 <% end %>
 
 <div class="table-responsive w-100 mb-5">
-<table class="table borderless w-100 mb-5">
+<table class="table borderless w-100 mb-5 mt-4">
   <tr>
     <td><%= button_to "Create", new_user_path, method: 'get', class: "button2 btn btn-primary" %></td>
     <td><%= link_to 'Export Data', {controller: 'users', action: 'export_user', format: 'csv'}, id: 'export-csv-link', class:'button8 btn btn-info text-light', :format => 'csv', download: 'export_data.csv'%></td>

@@ -5,7 +5,7 @@ class UserAssetLoansController < ApplicationController
 end
 
 def index
-    @loans = AssetLoanItem.joins(:asset_loan).where(asset_loans: { user_id: current_user.id}).page(params[:page]).per(4)
+    @loans = AssetLoanItem.joins(:asset_loan).where(asset_loans: { user_id: current_user.id}).page(params[:page]).per(2)
 
     if params[:search].present?
         search_term = "%#{params[:search].downcase}%"
@@ -17,8 +17,7 @@ def index
                                   .where("lower(asset_loans.code) LIKE :search OR lower(items.name) LIKE :search
                                    OR (asset_loans.loan_item_datetime AT time zone 'utc' AT time zone 'Asia/Jakarta')::text LIKE :search
                                    OR (asset_loans.return_estimation_datetime AT time zone 'utc' AT time zone 'Asia/Jakarta')::text LIKE :search
-                                   OR lower(asset_loans.necessary) LIKE :search
-                                   OR lower(asset_loans.loan_status) LIKE :search", search: "%#{params[:search].downcase}%")
+                                   OR lower(asset_loans.necessary) LIKE :search", search: "%#{params[:search].downcase}%")
     end
 end
 

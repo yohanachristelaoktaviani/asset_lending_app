@@ -1,9 +1,8 @@
 <% provide(:title, "Asset Return") %>
 
 <div class="form">
-<br>
 
-<div class="container9 mb-4">
+<div class="container9 mb-5">
 <h1 class="pb-0 mb-2">Return Item</h1>
 
 <% if flash[:success] %>
@@ -19,7 +18,7 @@
 <% end %>
 
 <div class="table-responsive w-100 mb-5">
-<table class="table borderless w-100 mb-5">
+<table class="table borderless w-100 mb-5 mt-4">
   <tr>
   <td><%= link_to 'Export Data', export_return_asset_return_items_path(format: :csv), id: 'export-csv-link',  class: 'button-export btn btn-info text-light', :format => 'csv', download: 'export_data.csv' %></td>
     <td>
@@ -30,16 +29,14 @@
                 <span class="search-icon"><i class="fa fa-search"></i></span>
               </div>
               <%= text_field_tag :search, params[:search], placeholder: 'Type here...', class: "form-control search-box" %>
-              <span class="input-group-btn">
-                <%= submit_tag "Search", class: "btn btn-secondary search-button" %>
-              </span>
+                <span class="input-group-btn">
+                  <%= submit_tag "Search", class: "btn btn-secondary search-button" %>
+                </span>
               </div>
         <% end %>
     </td>
   </tr>
 </table>
-
-
 
 <table class="table table-bordered table-striped table-hover w-100 center">
   <thead class="thead">

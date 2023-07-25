@@ -3,7 +3,7 @@ class AssetReturnItemsController < ApplicationController
   before_action :authenticate_user!, except: [:main]
 
   def index
-    @return_items = AssetReturnItem.joins(asset_return: :user).order('asset_returns.code ASC').page(params[:page]).per(1)
+    @return_items = AssetReturnItem.joins(asset_return: :user).order('asset_returns.code ASC').page(params[:page]).per(3)
     if params[:search].present?
       search_term = "%#{params[:search].downcase}%"
 
