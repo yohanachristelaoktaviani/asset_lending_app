@@ -1,0 +1,2 @@
+module AdminAssetLoansHelper
+end

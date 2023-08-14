@@ -19,45 +19,56 @@
 <div class="table-responsive w-100 mb-5">
 <table class="table borderless w-100 mb-5">
   <tr>
-    <td><%= button_to "Create", new_user_path, method: 'get', class: "button2 btn btn-primary" %></td>
-    <td><%= link_to 'Export Data', {controller: 'users', action: 'export_user', format: 'csv'}, id: 'export-csv-link', class:'button8 btn btn-info text-light', :format => 'csv', download: 'export_data.csv'%></td>
+    <td><%= button_to new_user_path, method: 'get', class: "button2 btn btn-primary" do %>
+      <span class="fa-solid fa-plus" aria-hidden="true"></span>
+      New User
+      <% end %>
+    </td>
+    <td>
+        <%= link_to export_user_users_path(format: :csv), download: 'export_data.csv',
+        id: 'export-csv-link',
+        class:'button8 btn btn-info text-light',
+        :format => 'csv' do %>
+          <span class="fa-solid fa-download" aria-hidden="true"></span>
+          Export User
+        <% end %>
+    </td>
     <td>
       <div class="table-container">
         <%= form_tag users_path, method: 'get' do %>
-            <div class="input-group mx-1 search">
-              <div class="container-icon">
-                <span class="search-icon"><i class="fa fa-search"></i></span>
-              </div>
-              <%= text_field_tag :search, params[:search], placeholder: 'Type here...', class: "form-control search-box" %>
-              <span class="input-group-btn">
-                <%= submit_tag "Search", class: "btn btn-secondary search-button" %>
-              </span>
+          <div class="input-group mx-1 search">
+            <%= text_field_tag :search, params[:search], placeholder: 'Type here...', class: "form-control search-box" %>
+            <span class="input-group-btn">
+              <%= button_tag(type: "submit", class: "btn btn-secondary search-button") do %>
+                <i class="fa fa-search"></i>
+              <% end %>
+            </span>
             </div>
         <% end %>
     </td>
   </tr>
 </table>
 
-<table class="table table-bordered table-striped table-hover w-100 center">
+<table id="myTable" class="table table-bordered table-item w-100 center vcenter">
   <thead class="thead">
     <tr>
-      <th class="th">Employee Id</th>
-      <th class="th">Name</th>
-      <th class="th">Email</th>
-      <th class="th">Department</th>
-      <th class="th">Position</th>
-      <th class="th">Role</th>
+      <th onclick="sortTable(0)" class="th vcenter text-nowrap">Employee Id<i class="fa fa-fw fa-sort"></i></th>
+      <th onclick="sortTable(1)" class="th vcenter text-nowrap">Name<i class="fa fa-fw fa-sort"></th>
+      <th onclick="sortTable(2)" class="th vcenter text-nowrap">Email <i class="fa fa-fw fa-sort"></th>
+      <th onclick="sortTable(3)" class="th vcenter text-nowrap">Department <i class="fa fa-fw fa-sort"></th>
+      <th onclick="sortTable(4)" class="th vcenter text-nowrap">Position <i class="fa fa-fw fa-sort"></th>
+      <th onclick="sortTable(5)" class="th vcenter text-nowrap">Role <i class="fa fa-fw fa-sort"></th>
     </tr>
   </thead>
   <tbody>
   <% @users.each do |user| %>
       <tr>
-          <td><%= link_to user.code, user_path(user) %></td>
-          <td><%= user.name %></td>
-          <td><%= user.email %></td>
-          <td><%= user.department.code_name %></td>
-          <td><%= user.position.code_name %></td>
-          <td><%= user.role %></td>
+          <td class="col-sm-1 text-left"><%= link_to user.code, user_path(user) %></td>
+          <td class="col-sm-1"><%= user.name %></td>
+          <td class="col-sm-1"><%= user.email %></td>
+          <td class="col-sm-2"><%= user.department.code_name %></td>
+          <td class="col-sm-2"><%= user.position %></td>
+          <td class="col-sm-1"><%= user.role %></td>
       </tr>
       <% end %>
   </tbody>

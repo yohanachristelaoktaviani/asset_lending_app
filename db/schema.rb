@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_06_12_102753) do
+ActiveRecord::Schema.define(version: 2023_08_14_014819) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -100,7 +100,7 @@ ActiveRecord::Schema.define(version: 2023_06_12_102753) do
   create_table "items", force: :cascade do |t|
     t.string "code", limit: 45, null: false
     t.string "name", limit: 100
-    t.string "merk", limit: 50
+    t.string "item_type", limit: 50
     t.string "condition", limit: 50
     t.string "vendor_name", limit: 50
     t.string "status", limit: 50
@@ -108,7 +108,7 @@ ActiveRecord::Schema.define(version: 2023_06_12_102753) do
     t.string "image", limit: 300
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["code"], name: "code_items", unique: true
+    t.index ["code"], name: "index_items_on_code", unique: true
   end
 
   create_table "positions", force: :cascade do |t|
@@ -122,7 +122,7 @@ ActiveRecord::Schema.define(version: 2023_06_12_102753) do
     t.string "code", limit: 45, null: false
     t.string "name", limit: 100
     t.integer "department_id"
-    t.integer "position_id"
+    t.string "position", limit: 150
     t.string "role", limit: 50
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
@@ -136,6 +136,16 @@ ActiveRecord::Schema.define(version: 2023_06_12_102753) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  create_table "versions", force: :cascade do |t|
+    t.string "item_type", null: false
+    t.bigint "item_id", null: false
+    t.string "event", null: false
+    t.string "whodunnit"
+    t.text "object"
+    t.datetime "created_at"
+    t.index ["item_type", "item_id"], name: "index_versions_on_item_type_and_item_id"
+  end
+
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "asset_loan_items", "asset_loans"
@@ -147,6 +157,6 @@ ActiveRecord::Schema.define(version: 2023_06_12_102753) do
   add_foreign_key "asset_return_items", "users", column: "admin_id", name: "fk_rails_admin"
   add_foreign_key "asset_returns", "asset_loans"
   add_foreign_key "asset_returns", "users"
-  add_foreign_key "users", "departments", name: "department_id"
-  add_foreign_key "users", "positions", name: "position_id"
+  add_foreign_key "users", "departments"
+  add_foreign_key "users", "positions"
 end

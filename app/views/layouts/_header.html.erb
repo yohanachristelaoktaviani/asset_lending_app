@@ -8,7 +8,7 @@
         <div class="collapse navbar-collapse mx-3" id="navbarSupportedContent">
           <ul class="nav navbar-nav ms-auto font-header">
             <% if current_user&.role == 'admin' %>
-            <li class="nav-item"><%= link_to "Dashboard", asset_loans_items_path, id:"nav", class:"nav-hover" %></li>
+            <li class="nav-item"><%= link_to "Dashboard", dashboards_path, id:"nav", class:"nav-hover" %></li>
 
             <li class="nav-item"><%= link_to "Item", items_path, id:"nav", class:"nav-hover" %></li>
 
@@ -24,15 +24,17 @@
                 <%= current_user.email %>
               </a>
               <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                 <%= link_to "Change Password", change_password_path, class:"dropdown-item" %>
+                <%= link_to "Reset Password", reset_password_header_path,
+                    data: { confirm: "Are you sure you want to reset your password?" }, class: "dropdown-item" %>
                 <%= link_to "Logout", destroy_user_session_path, method: :delete, class:"dropdown-item" %>
               </div>
             </li>
 
             <% elsif current_user %>
-              <li><%= link_to "Dashboard", user_items_path, id:"nav", class:"nav-hover" %></li>
+              <li><%= link_to "Dashboard", dashboards_path, id:"nav", class:"nav-hover" %></li>
               <li><%= link_to "Item", user_items_path, id:"nav" , class:"nav-hover" %></li>
-              <li><%= link_to "Loan",  user_asset_loans_path, id:"nav", class:"nav-hover" %></li>
-              <li><%= link_to "Return", user_asset_returns_path, id:"nav", class:"nav-hover" %></li>
+              <li><%= link_to "Loan & Return",  user_asset_loans_path, id:"nav", class:"nav-hover" %></li>
 
               <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown nav" role="button" data-toggle="dropdown"  >
@@ -40,6 +42,9 @@
                   <%= current_user.email %>
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                  <%= link_to "Change Password", change_password_path, class:"dropdown-item" %>
+                  <%= link_to "Reset Password", reset_password_header_path,
+                      data: { confirm: "Are you sure you want to reset your password?" }, class: "dropdown-item" %>
                   <%= link_to "Logout", destroy_user_session_path, method: :delete, class:"dropdown-item" %>
                 </div>
               </li>

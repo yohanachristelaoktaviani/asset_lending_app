@@ -10,62 +10,64 @@
 </div>
 <% end %>
 
-<div class="form2">
-<div class="font-edit">
-<h2>New User</h2>
-</div>
-        <%= form_with(model: @user, local: true)do |f| %>
-        <div class="font-user">
-        <hr>
-          <p>
-            <%= f.label :code, class:"tlabel" %>
-            <%= f.text_field :code, value: @user.code, readonly:true,  class:"textbox2" %>
-          </p>
-          <p>
-            <%= f.label :name, class:"tlabel" do %>
-              <%= "Name" %>
-              <span class="required">*</span>
-            <% end %>
-            <%= f.text_field :name, onkeypress: "return /^[a-zA-Z\s]*$/.test(event.key)", class:"textbox2", required: true %>
-          </p>
-          <p>
-          <%= f.label :email, class:"tlabel" do %>
-            <%= "Email" %>
-            <span class="required">*</span>
-            <% end %>
-          <%= f.text_field :email, class:"textbox2", required: true  %>
-          </p>
-          <p>
-          <%= f.label :password, class:"tlabel" do %>
-            <%= "Password" %>
-            <span class="required">*</span>
-            <% end %>
-          <%= f.text_field :password, type:"password", class:"textbox2", required: true  %>
-          </p>
-          <p>
-          <%= f.label :password_confirmation, class:"tlabel" do %>
-            <%= "Password Confirmation" %>
-            <span class="required">*</span>
-            <% end %>
-          <%= f.text_field :password_confirmation, type:"password", class:"textbox2",required: true  %>
-          </p>
-          <p>
-            <%= f.label :department, class:"tlabel" %>
-            <%= f.select :department_id, @department.map { |m| [m.code_name, m.id]}, {}, class:"textbox4"  %>
-          </p>
-          <p>
-            <%= f.label :position, class:"tlabel" %>
-            <%= f.select :position_id, @position.map { |m| [m.code_name, m.id]}, {},  class:"textbox4"  %>
-          </p>
-          <p>
-            <%= f.label :role, class:"tlabel" %>
-            <%= f.select :role, ['admin', 'user'], {}, class:"textbox4" %>
-          </p>
-          </div>
-            <span class="required"> &ensp; *Required fields</span>
-          <p>
-            <%= f.submit "CREATE", class: "button4 btn btn-primary btn-lg" %>
-          </p>
-          <% end %>
-
+<div class="form2 my-0 mb-5">
+  <div class="font-edit">
+    <h2>New User</h2>
+  </div>
+  <%= form_with(model: @user, local: true)do |f| %>
+  <div class="font-user">
+  <hr>
+    <p>
+      <%= f.label :code, class:"tlabel" do%>
+        <%= "Code" %>
+        <span class="required">*</span>
+      <% end %>
+      <%= f.text_field :code,  class:"textbox2" %>
+    </p>
+    <p>
+      <%= f.label :name, class:"tlabel" do %>
+        <%= "Name" %>
+        <span class="required">*</span>
+      <% end %>
+      <%= f.text_field :name, onkeypress: "return /^[a-zA-Z\s]*$/.test(event.key)", class:"textbox2", required: true %>
+    </p>
+    <p>
+    <%= f.label :email, class:"tlabel" do %>
+      <%= "Email" %>
+      <span class="required">*</span>
+      <% end %>
+    <%= f.text_field :email, class:"textbox2", required: true  %>
+    </p>
+    <p>
+    <%= f.label :password, class:"tlabel" do %>
+      <%= "Password" %>
+      <span class="required">*</span>
+      <% end %>
+    <%= f.text_field :password, type:"password", class:"textbox2", required: true  %>
+    </p>
+    <p>
+    <%= f.label :password_confirmation, class:"tlabel" do %>
+      <%= "Password Confirmation" %>
+      <span class="required">*</span>
+      <% end %>
+    <%= f.text_field :password_confirmation, type:"password", class:"textbox2",required: true  %>
+    </p>
+    <p>
+      <%= f.label :department, class:"tlabel" %>
+      <%= f.select :department_id, @department.map { |m| [m.code_name, m.id]}, {}, class:"textbox4"  %>
+    </p>
+    <p>
+      <%= f.label :position, class:"tlabel" %>
+      <%= f.text_field :position, class:"textbox2" %>
+    </p>
+    <p>
+      <%= f.label :role, class:"tlabel" %>
+      <%= f.select :role, ['admin', 'user'], {}, class:"textbox4" %>
+    </p>
+    </div>
+      <span class="required"> &ensp; *Required fields</span>
+    <p>
+      <%= f.submit "CREATE", class: "button4 btn btn-primary btn-lg mt-4" %>
+    </p>
+    <% end %>
 </div>

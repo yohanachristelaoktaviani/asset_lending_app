@@ -1,23 +1,27 @@
 <% provide(:title, "New Return Items") %>
 
 <% if flash[:errors] %>
-<div class="alert alert-danger">
-<ul>
-  <% flash[:errors].each do |error| %>
-    <li><%= error %></li>
-    <% end %>
-</ul>
-</div>
+  <div class="alert alert-danger">
+    <ul>
+      <% flash[:errors].each do |error| %>
+        <li><%= error %></li>
+      <% end %>
+    </ul>
+  </div>
 <% end %>
 
 <div class="container8">
-<div class="form2">
+<div class="form2 my-0 mb-5">
 <div class="font-edit font-left">
 <h2>New Return Items</h2>
 </div>
     <%= form_with model: @asset_return, url:  user_asset_returns_path, method: :post, format: :json do |f| %>
     <div class="font-user">
+    <%= f.fields_for :asset_return_items do |item_fields| %>
+      <%= item_fields.hidden_field :item_id %>
+    <% end %>
     <hr>
+      <%= f.hidden_field :loan_id, value: @asset_loan.id %>
       <p>
       <%= f.label :code, class:"tlabel" %>
       <%= f.text_field :code, value: @asset_return.code, readonly:true, class:"textbox2" %>
@@ -42,65 +46,69 @@
       <h2>Asset Return Items</h2>
       </div>
       <hr>
-      <table class= "table-return table-hover">
+      <table class= "table-return table-hover mb-0">
         <thead>
           <th class="tlabel2">Item</th>
-          <th class="tlabel2">Actual Condition</th>
-          <th class="tlabel2">Action</th>
+          <th class="tlabel2 px-4">Action</th>
         </thead>
 
         <tbody>
             <% @asset_loan.asset_loan_items.each_with_index do |item, index| %>
               <tr id="item-row-<%= index %>">
                 <td>
-                  <%= f.hidden_field "asset_loan_items[#{index}][item_id]", value: item.item_id %>
-                  <%= text_field_tag nil, item.item.name, readonly: true, style: "width: 325px;", class: "textbox2" %>
-                </td>
-                <td>
-                  <%= f.select "asset_return_items[#{index}][actual_item_condition]",
-                      options_for_select(['good', 'damage', 'unusable'], item.item.condition), {}, style: "width: 325px" %>
-                </td>
-                <td>
-                  <button class="btn btn-danger delete-item btn-del" data-item-id="<%= index %>">Delete</button>
-                </td>
+                <%= f.hidden_field "asset_return_items[#{index}][data_is_destroyed]", value: "false" %>
+                <%= f.hidden_field "asset_loan_items[#{index}][item_id]", value: item.item_id %>
+                <%= text_field_tag nil, item.item.name, readonly: true, class: "textbox8" %>
+              </td>
+              <td class="px-3">
+                <% if @asset_return.asset_return_items.count > 1 %>
+                  <button class="btn btn-danger delete-item btn-del font-user-loan" data-row-index="<%= index %>" data-item-id="<%= item.item_id %>" ><span class="fa-solid fa-trash" aria-hidden="true"></span></button>
+                <% else %>
+                  <button class="btn btn-danger delete-item btn-del font-user-loan" data-row-index="<%= index %>" data-item-id="<%= item.item_id %> disabled" ><span class="fa-solid fa-trash" aria-hidden="true"></span></button>
+                <% end %>
+              </td>
               </tr>
           <% end %>
         </tbody>
       </table>
 
-    <script>
-      // Add an event listener to the delete buttons
+      <script>
         document.querySelectorAll('.delete-item').forEach(function(button) {
           button.addEventListener('click', function(event) {
-          event.preventDefault();
+            event.preventDefault(); // Prevent form submission
 
-        // Get the item ID from the data attribute
-          var index = button.getAttribute('data-item-id');
-          console.log("Destroy button clicked for index: " + index);
+            var itemId = button.getAttribute('data-item-id');
+            var row = button.getAttribute('data-row-index');
+            console.log("Destroy button clicked for item ID: " + itemId);
 
-        // Find the corresponding item row and remove it from the DOM
-          var itemRow = document.getElementById('item-row-' + index);
-          if (itemRow) {
-            itemRow.remove();
-          }
+
+            var itemRow = document.getElementById('item-row-' + row);
+            if (itemRow) {
+              itemRow.style.display = 'none';
+              var hiddenInput = document.getElementById("asset_return_asset_return_items[" + row + "][data_is_destroyed]");
+              if (hiddenInput) {
+                hiddenInput.value = "true";
+              }
+            }
           });
         });
 
+
         function display_ct5() {
           var x = new Date()
-          var ampm = x.getHours( ) >= 12 ? ' PM' : ' AM';
-
           var x1=x.getFullYear() + '-' + (x.getMonth() + 1) + '-' + x.getDate();
-          x1 = x1 + " " +  x.getHours( )+ ":" +  x.getMinutes() + ":" +  x.getSeconds() + ampm;
+          x1 = x1 + " " +  x.getHours( )+ ":" +  x.getMinutes()
           document.getElementById('ct5').innerHTML = x1;
           display_c5();
-           }
-           function display_c5(){
+        }
+
+        function display_c5(){
           var refresh=100; // Refresh rate in milli seconds
           mytime=setTimeout('display_ct5()',refresh)
-          }
-          display_c5()
-    </script>
+        }
+
+        display_c5()
+      </script>
 
     <p>
     <%= f.submit "CREATE", class: "button4 btn btn-primary btn-lg" %>

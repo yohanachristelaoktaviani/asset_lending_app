@@ -8,9 +8,16 @@ class AssetReturn < ActiveRecord::Base
   accepts_nested_attributes_for :asset_return_items
   # belongs_to :item
   attribute :actual_return_datetime, :datetime, default: -> { Time.current }
+  validate :validate_nested_attributes
 
+  self.time_zone_aware_attributes = :local
   # def formatted_actual_return_datetime
   #   actual_return_datetime.strftime('%Y-%m-%d %H:%M:%S %z')
   # end
 
+  def validate_nested_attributes
+    if asset_return_items.reject(&:marked_for_destruction?).blank?
+      errors.add(:base, 'Items cant be empty')
+    end
+  end
 end

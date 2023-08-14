@@ -3,19 +3,58 @@
 <h1>Return Item Detail</h1>
 
 <div class="container8">
-  <div class="container-detail-item">
-    <div class="image-container mt-4">
-      <%= image_tag @return_item.item.image, class:"imageee"%>
-    </div>
-
+  <div class="container-loan-return">
     <div class="container5 mt-4">
     <div class="button-container-return">
     <table>
       <tr>
-        <td><%= button_to "Received", received_asset_return_item_path , method: 'post', class: "button2 btn btn-success w-100" %></td>
+        <td><%= link_to '#receivedModal', class: "button14 btn btn-success#{' disabled' if @return_item.status == 'received'}", data: { toggle: "modal", target: "#receivedModal" } do %>
+        <span class="fa-solid fa-file-arrow-down" aria-hidden="true"></span>
+        Receive
+        <% end %>
+        </td>
       </tr>
     </table>
   </div>
+
+  <div id="receivedModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+              <button type="button" class="close"  data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+              <h3 id="myModalLabel">Choose Admin</h3>
+              </div>
+              <div class="modal-body">
+                <form id="evidenceForm" action="<%= received_asset_return_item_path(@return_item) %>" method="POST">
+                <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+              <div class="form-group">
+                <label for="admin-name" class="col-form-label">Admin</label>
+                <span class="required">*</span>
+                <select class="form-control" id="admin-name" name="name" required=true>
+                  <%= options_for_select(@admins.map { |admin| [admin.name, admin.id] }, @return_item.admin_id) %>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="actual-condition" class="col-form-label">Actual Item Condition</label>
+                <span class="required">*</span>
+                <select class="form-control" id="actual-condition" name="condition" required=true>
+                  <option value="layak pakai">layak pakai</option>
+                  <option value="layak pakai ada cacat">layak pakai ada cacat</option>
+                  <option value="tidak layak pakai">tidak layak pakai</option>
+                </select>
+              </div>
+              <span class="required-modal"> *Required fields</span>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" id="close-modal" data-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary">Save changes</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
 
 <h3 class="font-item"><%= @return_item.asset_return.code %></h3>
   <table class="table tablestat">
@@ -70,3 +109,19 @@
 </div>
 </div>
 </div>
+<script>
+$(document).ready(function() {
+  $('#receivedModal').modal({
+    show: false // Hide the modal by default
+  });
+
+  $('.button14').click(function() {
+    $('#receivedModal').modal('show'); //Show the modal when the Accepted button is clicked
+  });
+
+  $('button[data-dismiss="modal"]').click(function() {
+    console.log("Close button clicked");
+    $('.modal').modal('hide'); //Hide the modal when Close button is clicked
+  });
+});
+</script>

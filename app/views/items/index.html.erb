@@ -19,72 +19,123 @@
 <div class="table-responsive mb-5">
 <table class="table borderless mb-5">
   <tr>
-    <td><%= button_to "Create", new_item_path, method: 'get', class: "button2 btn btn-primary" %></td>
-    <td><%= link_to 'Export Data', {controller: 'items', action: 'export_item', format: 'csv'}, id: 'export-csv-link', class:'button8 btn btn-info text-light', :format => 'csv', download: 'export_data.csv'%></td>
-    <td>
-    <div class="table-container">
-      <%= form_tag items_path, method: 'get' do %>
-          <div class="input-group mx-1 search">
-            <div class="container-icon">
-              <span class="search-icon"><i class="fa fa-search"></i></span>
-            </div>
-            <%= text_field_tag :search, params[:search], placeholder: 'Type here...', class: "form-control search-box" %>
-            <span class="input-group-btn">
-              <%= submit_tag "Search", class: "btn btn-secondary search-button" %>
-            </span>
-            </div>
+    <td><%= button_to new_item_path, method: 'get', class: "button2 btn btn-primary" do %>
+      <span class="fa-solid fa-plus" aria-hidden="true"></span>
+      New Item
       <% end %>
+      </td>
+    <td><%= link_to '#importModal', class:'button-import btn btn-info text-light', data: { toggle: "modal", target: "#importModal" } do %>
+      <span class="fa-solid fa-upload" aria-hidden="true"></span>
+      Import Items
+    <% end %>
+    </td>
+    <td>
+      <%= link_to export_item_items_path(format: :csv), download: 'export_data.csv',
+      id: 'export-csv-link',
+      class:'button11 btn btn-info text-light',
+      :format => 'csv' do %>
+        <span class="fa-solid fa-download" aria-hidden="true"></span>
+        Export Items
+      <% end %>
+    </td>
+
+    <td><div class="table-container">
+      <%= form_tag items_path, method: 'get' do %>
+        <div class="input-group mx-1 search">
+          <%= text_field_tag :search, params[:search], placeholder: 'Type here...', class: "form-control search-box" %>
+          <span class="input-group-btn">
+            <%= button_tag(type: "submit", class: "btn btn-secondary search-button") do %>
+              <i class="fa fa-search"></i>
+            <% end %>
+          </span>
+          </div>
+      <% end %>
+    </div>
     </td>
   </tr>
 </table>
 
-<table class="table table-bordered center table-item table-responsive my-0 ">
+
+<div id="importModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close"  data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+                <h3 id="myModalLabel">Import Items</h3>
+                </div>
+                <div class="modal-body">
+                <%= form_tag import_item_items_path, multipart: true do %>
+                  <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+                <div class="form-group">
+                  <p>You must use the SIPAS template in csv format to import items.
+                   <%= link_to 'Click here', download_template_items_path, class: 'download_link' %> to download the template. </p>
+                </div>
+                <div class="form-group">
+                  <span class="required">*</span>
+                  <%= file_field_tag :file, accept: '.csv' %>
+                  <%= submit_tag 'Import CSV', class: 'btn btn-primary mx-3' %>
+                  <% end %>
+                </div>
+                <span class="required-modal"> *Required fields</span>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary mx-4" id="close-modal" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+          </div>
+        </div>
+      </div>
+<table id="myTable" class="table table-bordered center table-item table-responsive my-0 vcenter" >
   <thead class="thead">
     <tr>
-      <th class="th">Item ID</th>
-      <th class="th">Name</th>
-      <th class="th">Merk</th>
-      <th class="th">Vendor Name</th>
-      <th class="th">Condition</th>
-      <th class="th">Status</th>
-      <th class="th">Description</th>
-      <th class="th">Image</th>
+      <th onclick="sortTable(0)" class="th text-nowrap">Code<i class="fa fa-fw fa-sort"></i></th>
+      <th onclick="sortTable(1)" class="th text-nowrap">Name<i class="fa fa-fw fa-sort"></th>
+      <th onclick="sortTable(2)" class="th text-nowrap">Type<i class="fa fa-fw fa-sort"></th>
+      <th onclick="sortTable(3)" class="th text-nowrap">Vendor Name<i class="fa fa-fw fa-sort"></th>
+      <th onclick="sortTable(4)" class="th text-nowrap">Condition<i class="fa fa-fw fa-sort"></th>
+      <th onclick="sortTable(5)" class="th text-nowrap">Location<i class="fa fa-fw fa-sort"></th>
+      <th onclick="sortTable(6)" class="th text-nowrap">Serial Number<i class="fa fa-fw fa-sort"></th>
+      <th onclick="sortTable(7)" class="th text-nowrap">Purchase Date<i class="fa fa-fw fa-sort"></th>
+      <th onclick="sortTable(8)" class="th text-nowrap">Status<i class="fa fa-fw fa-sort"></th>
     </tr>
   </thead>
   <tbody>
   <% @items.each do |item| %>
       <tr>
-          <td><%= link_to item.code, item_path(item) %></td>
-          <td><%= item.name %></td>
-          <td><%= item.merk %></td>
-          <td><%= item.vendor_name %></td>
-          <td>
-            <% if item.condition == "good" %>
+          <td class="col-sm-1 text-left"><%= link_to item.code, item_path(item) %></td>
+          <td class="col-sm-2"><%= item.name %></td>
+          <td class="col-sm-1"><%= item.item_type %></td>
+          <td class="col-sm-1"><%= item.vendor_name %></td>
+          <td class="col-sm-1">
+            <% if item.condition == "layak pakai" %>
               <span class="badge rounded-pill bg-success"><%= item.condition %></span>
-            <% elsif item.condition == "damage" %>
+            <% elsif item.condition == "layak pakai ada cacat" %>
               <span class="badge rounded-pill bg-warning"><%= item.condition %></span>
-            <% elsif item.condition == "unusable" %>
+            <% elsif item.condition == "tidak layak pakai" %>
               <span class="badge rounded-pill bg-danger"><%= item.condition %></span>
             <% end %>
           </td>
-          <td>
+          <td class="col-sm-1"><%= item.location %></td>
+          <td class="col-sm-1"><%= item.serial_number %></td>
+          <td class="col-sm-1">
+            <%=
+              if item.purchase_date.present?
+                item.purchase_date.localtime.strftime("%Y-%m-%d")
+              else
+                ""
+              end
+            %>
+          </td>
+          <td class="col-sm-1">
           <% if item.status == "available" %>
             <span class="badge rounded-pill bg-info"><%= item.status %></span>
           <% elsif item.status == "unavailable" %>
             <span class="badge rounded-pill bg-dark"><%= item.status %></span>
           <% end %>
           </td>
-          <td class="description-column"><%= simple_format(item.description)  %></td>
-          <td><% if item.image.attached? %>
-              <%= image_tag item.image, class:"imagee"%>
-              <% else %>
-              <%= image_tag 'unknown-item.jpg', class:"imagee" %>
-              <% end %>
-          </td>
-
       </tr>
       <% end %>
-
   </tbody>
 </table>
 </div>
@@ -92,5 +143,22 @@
 </div>
 </div>
 
+<script>
+$(document).ready(function() {
+    $('#importModal').modal({
+      show: false // Hide the modal by default
+    });
+
+    $('.button-import').click(function() {
+      console.log("Import button clicked")
+      $('#importModal').modal('show'); //Show the modal when the Decline button is clicked
+    });
+
+    $('button[data-dismiss="modal"]').click(function() {
+      console.log("Close button clicked");
+      $('.modal').modal('hide'); // Hide the modal when the Close button is clicked
+      });
+  });
+</script>
 
 

@@ -3,54 +3,122 @@
 <h1>Item Detail</h1>
 
 <div class="container8">
-<div class="container-detail-item">
-<div class="image-container mt-4">
-<% if @item.image.attached? %>
-  <%= image_tag @item.image, class: "imageee" %>
-<% else %>
-  <%= image_tag 'unknown-item.jpg', class: "imageee" %>
-<% end %>
+  <div class="container-detail-item">
+  <div class="carousel-container">
+    <div id="carouselExample" class="carousel slide" data-bs-ride="carousel">
+
+
+    <div class="carousel-inner">
+        <% if @item.image.attached? %>
+          <% @item.image.each_with_index do |image, index| %>
+            <div class="carousel-item <%= 'active' if index == 0 %>">
+              <%= image_tag url_for(image), class: "imageee" %>
+            </div>
+          <% end %>
+        <% else %>
+        <div class="carousel-item active">
+          <%= image_tag 'unknown-item.jpg', class: "imageee" %>
+        </div>
+        <% end %>
+      </div>
+
+      <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+      </button>
+      <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+      </button>
+      </div>
+      </div>
+
+    <div class="container5 mt-4">
+    <table class="table borderless">
+      <div class="button-container">
+      <tr>
+      <td>
+        <%= button_to edit_item_path, method: 'get', class: "button1 btn btn-warning text-light" do %>
+          <span class="fa-solid fa-pen-to-square" aria-hidden="true"></span>
+          Edit
+        <% end %>
+      </td>
+      <td>
+        <%= link_to history_item_path(@item), class: "button-history btn btn-info text-light" do %>
+          <span class="fa-solid fa-clock-rotate-left" aria-hidden="true"></span>
+          History
+        <% end %>
+      </td>
+      <td>
+        <%= button_to item_path, method: 'delete', data: { confirm: "Are you sure for delete this item?" }, class: "button7 btn btn-danger", disabled: @item.status == 'unavailable' do %>
+          <span class="fa-solid fa-trash-can" aria-hidden="true"></span>
+          Delete
+        <% end %>
+      </td>
+      </tr>
+      </div>
+    </table>
+
+    <table class="table tablestat">
+      <tr>
+        <th>Code</th>
+        <td>:</td>
+        <td><%= @item.code %></td>
+      </tr>
+      <tr>
+        <th>Item Name</th>
+        <td>:</td>
+        <td><%= @item.name %></td>
+      </tr>
+      <tr>
+        <th>Type</th>
+        <td>:</td>
+        <td><%= @item.item_type %></td>
+      </tr>
+      <tr>
+        <th class="w-50">Vendor Name</th>
+        <td>:</td>
+        <td><%= @item.vendor_name %></td>
+      </tr>
+      <tr>
+        <th>Condition</th>
+        <td>:</td>
+        <td><%= @item.condition %></td>
+      </tr>
+      <tr>
+        <th>Status</th>
+        <td>:</td>
+        <td><%= @item.status %></td>
+      </tr>
+      <tr>
+        <th>Location</th>
+        <td>:</td>
+        <td><%= @item.location %></td>
+      </tr>
+      <tr>
+        <th>Serial Number</th>
+        <td>:</td>
+        <td><%= @item.serial_number %></td>
+      </tr>
+      <tr>
+        <th>Purchase Date</th>
+        <td>:</td>
+        <td><%=
+        if @item.purchase_date.present?
+          @item.purchase_date.localtime.strftime("%Y-%m-%d")
+        else
+          ""
+        end
+        %></td>
+      </tr>
+      <tr>
+        <th>Description</th>
+        <td>:</td>
+        <td class="w-100"><%= simple_format(@item.description) %></td>
+      </tr>
+    </table>
+
+    </div>
+  </div>
 </div>
 
-<div class="container5 mt-4">
-<div class="button-container">
-  <%= button_to "Edit", edit_item_path, method: 'get', class: "button1 btn btn-warning text-light" %>
-  <%= button_to "Delete", item_path, method: 'delete', data: { confirm: "Are you sure for delete this item?" }, class: "button7 btn btn-danger" %>
-</div>
-
-<table class="table tablestat">
-  <tr>
-    <th>Code</th>
-    <td>:</td>
-    <td><%= @item.code %></td>
-  </tr>
-  <tr>
-    <th>Merk</th>
-    <td>:</td>
-    <td><%= @item.merk %></td>
-  </tr>
-  <tr>
-    <th class="w-50">Vendor Name</th>
-    <td>:</td>
-    <td><%= @item.vendor_name %></td>
-  </tr>
-  <tr>
-    <th>Condition</th>
-    <td>:</td>
-    <td><%= @item.condition %></td>
-  </tr>
-  <tr>
-    <th>Status</th>
-    <td>:</td>
-    <td><%= @item.status %></td>
-  </tr>
-  <tr>
-    <th>Description</th>
-    <td>:</td>
-    <td class="w-100"><%= simple_format(@item.description) %></td>
-  </tr>
-</table>
-</div>
-</div>
-</div>
-</div>

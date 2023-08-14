@@ -3,38 +3,62 @@
 <h1>Loan Item Detail</h1>
 
 <div class="container8">
-  <div class="container-detail-item">
-    <div class="image-container mt-4">
-      <%= image_tag @loan_item.item.image, class:"imageee"%>
-    </div>
+  <div class="container-loan-return">
+
     <div class="container5 mt-4">
+      <table class="table borderless">
       <div class="button-container">
-      <table>
         <tr>
-          <td><%= button_to "Accepted", accept_asset_loans_item_path , method: 'post', class: "button5 btn btn-success" %></td>
-          <td><%= button_to "Cancel", cancel_asset_loans_item_path , method: 'post', class: "button3 btn btn-primary", disabled: @loan_item.loan_status == 'waiting' %></td>
-          <td>
-            <%= link_to "Decline", "#myModal", class: "button6 btn btn-danger#{' disabled' if @loan_item.loan_status == 'accepted' || @loan_item.loan_status == 'decline' }", "data-toggle" => "modal" %>
+          <td><%= link_to '#acceptModal', class: "button5 btn btn-success#{' disabled' if @loan_item.loan_status == 'accepted'}", data: { toggle: "modal", target: "#acceptModal" } do %>
+            <span class="fa-solid fa-check-to-slot" aria-hidden="true"></span>
+            Accept
+          <% end %>
           </td>
-          </tr>
+          <td><%= link_to '#cancelModal', class: "button3 btn btn-primary#{' disabled' if @loan_item.loan_status == 'waiting'}", data: { toggle: "modal", target: "#cancelModal" } do %>
+            <span class="fa-solid fa-eject" aria-hidden="true"></span>
+            Cancel
+            <% end %>
+          </td>
+          <td>
+            <%= link_to '#declineModal', class: "button6 btn btn-danger#{' disabled' if @loan_item.loan_status == 'accepted' || @loan_item.loan_status == 'decline' }", data: { toggle: "modal", target: "#declineModal" } do %>
+            <span class="fa-solid fa-rectangle-xmark" aria-hidden="true"></span>
+            Decline
+            <% end %>
+          </td>
+          <td><%= link_to new_user_asset_return_path(asset_loan_id: @loan_item.asset_loan_id) , method: 'get', class: "button10 btn btn-lg btn-primary#{' disabled' if @loan_item.loan_status == 'waiting' || @loan_item.loan_status == 'decline' }" do %>
+            <span class="fa-solid fa-arrow-right-arrow-left" aria-hidden="true"></span>
+            Return
+            <% end %>
+          </td>
+        </tr>
+        </div>
       </table>
-      </div>
-      <div id="myModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+
+      <div id="declineModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
           <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close"  data-dismiss="modal" aria-label="Close">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                   <span aria-hidden="true">&times;</span>
                 </button>
-                <h3 id="myModalLabel">Input Evidence</h3>
+                <h3 id="myModalLabel">Input Reason</h3>
                 </div>
                 <div class="modal-body">
                   <form id="evidenceForm" action="<%= decline_asset_loans_item_path(@loan_item) %>" method="POST">
                   <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
                 <div class="form-group">
-                  <label for="message-text" class="col-form-label">Message:</label>
-                  <textarea class="form-control" id="message-text" name="evidence"></textarea>
+                  <label for="message-text" class="col-form-label">Message</label>
+                  <span class="required">*</span>
+                  <textarea class="form-control" id="message-text" name="evidence" required=true></textarea>
                 </div>
+                <div class="form-group">
+                  <label for="admin-name" class="col-form-label">Admin</label>
+                  <span class="required">*</span>
+                  <select class="form-control" id="admin-name" name="name" required=true>
+                    <%= options_for_select(@admins.map { |admin| [admin.name, admin.id] }, @loan_item.admin_id) %>
+                  </select>
+                </div>
+                <span class="required-modal"> *Required fields</span>
                 <div class="modal-footer">
                   <button type="button" class="btn btn-secondary" id="close-modal" data-dismiss="modal">Close</button>
                   <button type="submit" class="btn btn-primary">Save changes</button>
@@ -44,15 +68,80 @@
           </div>
         </div>
       </div>
+
+      <div id="cancelModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close"  data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+                <h3 id="myModalLabel">Input Reason</h3>
+                </div>
+                <div class="modal-body">
+                  <form id="evidenceForm" action="<%= cancel_asset_loans_item_path(@loan_item) %>" method="POST">
+                  <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+                <div class="form-group">
+                  <label for="message-text" class="col-form-label">Message</label>
+                  <span class="required">*</span>
+                  <textarea class="form-control" id="message-text" name="evidence" required=true></textarea>
+                </div>
+                <div class="form-group">
+                  <label for="admin-name" class="col-form-label">Admin</label>
+                  <span class="required">*</span>
+                  <select class="form-control" id="admin-name" name="name" required=true>
+                    <%= options_for_select(@admins.map { |admin| [admin.name, admin.id] }, @loan_item.admin_id) %>
+                  </select>
+                </div>
+                <span class="required-modal"> *Required fields</span>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" id="close-modal" data-dismiss="modal">Close</button>
+                  <button type="submit" class="btn btn-primary">Save changes</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="acceptModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+              <button type="button" class="close"  data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+              <h3 id="myModalLabel">Choose Admin</h3>
+              </div>
+              <div class="modal-body">
+                <form id="evidenceForm" action="<%= accept_asset_loans_item_path(@loan_item) %>" method="POST">
+                <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+              <div class="form-group">
+                <label for="admin-name" class="col-form-label">Admin</label>
+                <span class="required">*</span>
+                <select class="form-control" id="admin-name" name="name" required=true>
+                  <%= options_for_select(@admins.map { |admin| [admin.name, admin.id] }, @loan_item.admin_id) %>
+                </select>
+              </div>
+              <span class="required-modal"> *Required fields</span>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" id="close-modal" data-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary">Save changes</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
       <h3 class="font-item"><%= @loan_item.asset_loan.code %></h3>
         <table class="table tablestat">
             <tr>
-              <th>Item</th>
+              <th>Item Name</th>
               <td>:</td>
               <td><%= @loan_item.item.name%></td>
             </tr>
             <tr>
-              <th>Item ID</th>
+              <th>Item Code</th>
               <td>:</td>
               <td><%= @loan_item.item.code%></td>
             </tr>
@@ -64,12 +153,12 @@
             <tr>
               <th>Loan Date</th>
               <td>:</td>
-              <td><%= @loan_item.asset_loan.loan_item_datetime.localtime.strftime("%Y-%m-%d %H:%M:%S")%></td>
+              <td><%= @loan_item.asset_loan.loan_item_datetime.strftime("%Y-%m-%d %H:%M")%></td>
             </tr>
             <tr>
               <th class="w-50">Return Estimation Date</th>
               <td>:</td>
-              <td><%= @loan_item.asset_loan.return_estimation_datetime.localtime.strftime("%Y-%m-%d %H:%M:%S")%></td>
+              <td><%= @loan_item.asset_loan.return_estimation_datetime.strftime("%Y-%m-%d %H:%M")%></td>
             </tr>
             <tr>
               <th>Item Condition</th>
@@ -100,7 +189,7 @@
               <td><%= @loan_item.loan_status%></td>
             </tr>
             <tr>
-              <th>Evidence</th>
+              <th>Reason</th>
               <td>:</td>
               <td class="w-100"><%= @loan_item.evidence%></td>
             </tr>
@@ -112,12 +201,28 @@
 
 <script>
 $(document).ready(function() {
-    $('#myModal').modal({
+    $('#declineModal').modal({
       show: false // Hide the modal by default
     });
 
-    $('.btn-danger').click(function() {
-      $('#myModal').modal('show'); //Show the modal when the Decline button is clicked
+    $('#cancelModal').modal({
+      show: false // Hide the modal by default
+    });
+
+    $('#acceptModal').modal({
+      show: false // Hide the modal by default
+    });
+
+    $('.button6').click(function() {
+      $('#declineModal').modal('show'); //Show the modal when the Decline button is clicked
+    });
+
+    $('.button3').click(function() {
+      $('#cancelModal').modal('show'); //Show the modal when the Decline button is clicked
+    });
+
+    $('.button5').click(function() {
+      $('#acceptModal').modal('show'); //Show the modal when the Decline button is clicked
     });
 
     $('button[data-dismiss="modal"]').click(function() {

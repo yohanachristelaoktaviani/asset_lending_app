@@ -3,14 +3,14 @@
 <% if flash[:errors] %>
 <div class="alert alert-danger">
 <ul>
-  <%= flash[:errors].each do |error| %>
+  <% flash[:errors].each do |error| %>
     <li><%= error %></li>
     <% end %>
 </ul>
 </div>
 <% end %>
 
-<div class="container8">
+<div class="container8 mb-5">
 <div class="form2">
   <div class="font-edit">
     <h2>Edit Item</h2>
@@ -19,8 +19,11 @@
   <div class="font-user">
   <hr>
     <p>
-      <%= f.label :code, class:"tlabel" %>
-      <%= f.text_field :code, readonly: true,  class:"textbox2" %>
+      <%= f.label :code, class:"tlabel" do%>
+        <%= "Code" %>
+        <span class="required">*</span>
+      <% end %>
+      <%= f.text_field :code, class:"textbox2", required: true %>
     </p>
     <p>
     <%= f.label :name, class:"tlabel" do %>
@@ -30,11 +33,11 @@
       <%= f.text_field :name, class:"textbox2", required: true %>
     </p>
     <p>
-    <%= f.label :merk, class:"tlabel" do %>
-      <%= "Merk" %>
+    <%= f.label :item_type, class:"tlabel" do %>
+      <%= "Type" %>
       <span class="required">*</span>
     <% end %>
-      <%= f.text_field :merk, class:"textbox2", required: true  %>
+      <%= f.text_field :item_type, class:"textbox2", required: true  %>
     </p>
     <p>
       <%= f.label :vendor_name, class:"tlabel" %>
@@ -42,11 +45,23 @@
     </p>
     <p>
       <%= f.label :condition, class:"tlabel" %>
-      <%= f.select :condition, ['good', 'damage', 'unusable'], {}, class:"textbox4" %>
+      <%= f.select :condition, ['layak pakai', 'layak pakai ada cacat', 'tidak layak pakai'], {}, class:"textbox4" %>
+    </p>
+    <p>
+      <%= f.label :location, class:"tlabel" %>
+      <%= f.select :location, ['office', 'employee'], {},  class:"textbox4" %>
     </p>
     <p>
       <%= f.label :status, class:"tlabel" %>
       <%= f.select :status, ['available', 'unavailable'], {}, class:"textbox4" %>
+    </p>
+    <p>
+      <%= f.label :serial_number, class:"tlabel" %>
+      <%= f.text_field :serial_number, class:"textbox2" %>
+    </p>
+    <p>
+      <%= f.label :purchase_date, class:"tlabel" %>
+      <%= f.text_field :purchase_date, autocomplete:"off" ,class:"textbox2", id:"datetime" %>
     </p>
     <p>
       <%= f.label :description, class:"tlabel" %>
@@ -55,16 +70,43 @@
       <div class="input-group custom-file-button mb-3">
         <div class="input-group-prepend">
           <%= f.label :image, class:"tlabel" %>
-          <%= f.file_field :image, class:"form-control textbox5",  id:"inputGroupFile"  %>
+          <%= f.file_field :image, class:"form-control textbox5",  id:"inputGroupFile", multiple: true  %>
         </div>
       </div>
+    </p>
+    <p>
+      <%= f.label :selected_item, class:"tlabel" %>
+      <%= f.check_box :selected_item%>
     </p>
     </div>
       <span class="required"> &ensp; *Required fields</span>
     <p>
-      <%= f.submit "UPDATE", class: "button4 btn btn-primary btn-lg" %>
+      <%= f.submit "UPDATE", class: "button4 btn btn-primary btn-lg mt-2" %>
     </p>
     <% end %>
 
 </div>
 </div>
+
+<script>
+  $(function() {
+    $('input[id="datetime"]').daterangepicker({
+      singleDatePicker: true,
+      autoUpdateInput: false,
+      showDropdowns: true,
+      startDate: new Date(),
+      maxDate: moment().endOf('year').add(1, 'day'),
+      locale: {
+        cancelLabel: 'Clear'
+      }
+    });
+
+    $('input[id="datetime"]').on('apply.daterangepicker', function(ev, picker) {
+      $(this).val(picker.startDate.format('YYYY-MM-DD'));
+    });
+
+    $('input[id="datetime"]').on('cancel.daterangepicker', function(ev, picker) {
+      $(this).val('');
+    });
+  });
+</script>

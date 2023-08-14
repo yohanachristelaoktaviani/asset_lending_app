@@ -7,6 +7,7 @@ class AssetLoan < ActiveRecord::Base
   after_initialize :generate_code, if: :new_record?
   validate :check_dates
   validate :validate_nested_attributes
+  # validates :user_id, presence: true, if: :admin_user?
 
   private
 
@@ -35,4 +36,8 @@ class AssetLoan < ActiveRecord::Base
       errors.add(:base, 'Items must be filled')
     end
   end
+  
+  # def admin_user?
+  #   current_user.role == "admin"
+  # end
 end

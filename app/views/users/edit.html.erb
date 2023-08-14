@@ -1,6 +1,16 @@
 <% provide(:title, "Edit User") %>
 
-<div class="form2">
+<% if flash[:errors] %>
+<div class="alert alert-danger">
+<ul>
+  <% flash[:errors].each do |error| %>
+    <li><%= error %></li>
+    <% end %>
+</ul>
+</div>
+<% end %>
+
+<div class="form2 my-0 mb-5">
 <div class="font-edit">
 <h2>Edit User</h2>
 </div>
@@ -8,40 +18,57 @@
         <div class="font-user">
         <hr>
           <p>
-          <%= f.label :code, class:"tlabel" %>
-          <%= f.text_field :code, disabled: true, class:"textbox2" %>
+          <%= f.label :code, class:"tlabel" do%>
+            <%= "Code" %>
+            <span class="required">*</span>
+          <% end %>
+          <%= f.text_field :code, class:"textbox2" %>
           </p>
           <p>
-          <%= f.label :name, class:"tlabel" %>
+          <%= f.label :name, class:"tlabel" do%>
+            <%= "Name" %>
+            <span class="required">*</span>
+          <% end %>
           <%= f.text_field :name,id: "name-field",onkeypress: "return /^[a-zA-Z\s]*$/.test(event.key)",  class:"textbox2" %>
           </p>
           <p>
-          <%= f.label :email, class:"tlabel" %>
-          <%= f.text_field :email, class:"textbox2" %>
+          <%= f.label :email, class:"tlabel" do%>
+            <%= "Email" %>
+              <span class="required">*</span>
+          <% end %>
+          <%= f.text_field :email, class:"textbox2"%>
           </p>
           <p>
-          <%= f.label :password, class:"tlabel" %>
+          <%= f.label :password, class:"tlabel" do%>
+            <%= "Password" %>
+              <span class="required">*</span>
+            <% end %>
           <%= f.text_field :password, type:"password" ,class:"textbox2" %>
           </p>
           <p>
-          <%= f.label :password_confirmation, class:"tlabel" %>
+          <%= f.label :password_confirmation, class:"tlabel" do%>
+            <%= "Password Confirmation" %>
+              <span class="required">*</span>
+            <% end %>
           <%= f.text_field :password_confirmation, type:"password", class:"textbox2" %>
           </p>
           <p>
-          <%= f.label :department, class:"tlabel" %>
-          <%= f.select :department_id, @department.map { |m| [m.code_name, m.id]}, {}, class:"textbox2"  %>
+            <%= f.label :department, class:"tlabel" %>
+            <%= f.select :department_id, @department.map { |m| [m.code_name, m.id]}, {}, class:"textbox2"  %>
           </p>
           <p>
-          <%= f.label :position, class:"tlabel" %>
-          <%= f.select :position_id, @position.map { |m| [m.code_name, m.id]}, {},  class:"textbox2"  %>
+            <%= f.label :position, class:"tlabel" %>
+            <%= f.text_field :position, class:"textbox2" %>
           </p>
           <p>
-          <%= f.label :role, class:"tlabel" %>
-          <%= f.select :role, ['admin', 'user'], {}, class:"textbox4" %>
+            <%= f.label :role, class:"tlabel" %>
+            <%= f.select :role, ['admin', 'user'], {}, class:"textbox4" %>
           </p>
+          </div>
+            <span class="required"> &ensp; *Required fields</span>
           <p>
-          <%= f.submit "UPDATE", class: "button4 btn btn-primary btn-lg" %>
+          <%= f.submit "UPDATE", class: "button4 btn btn-primary btn-lg mt-4" %>
           </p>
           <% end %>
-        </div>
+
 </div>

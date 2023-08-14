@@ -40,7 +40,6 @@
       <th class="th">Return ID</th>
       <th class="th">Item</th>
       <th class="th">User</th>
-      <th class="th">Actual Condition</th>
       <th class="th">Actual Return Datetime</th>
       <th class="th">Return Status</th>
     </tr>
@@ -56,15 +55,6 @@
         <% end %>
         <td><%= asset.item.name %></td>
         <td><%= asset.asset_return.user.name %></td>
-        <td>
-          <% if asset.actual_item_condition == "good" %>
-            <span class="badge rounded-pill bg-success"><%= asset.actual_item_condition %></span>
-          <% elsif asset.actual_item_condition == "damage" %>
-            <span class="badge rounded-pill bg-warning"><%= asset.actual_item_condition %></span>
-          <% elsif asset.actual_item_condition == "unusable" %>
-            <span class="badge rounded-pill bg-danger"><%= asset.actual_item_condition %></span>
-          <% end %>
-        </td>
         <td><%= asset.asset_return.actual_return_datetime.localtime.strftime("%Y-%m-%d %H:%M:%S") %></td>
         <td>
           <% if asset.asset_return.return_status == "on time" %>

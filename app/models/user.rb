@@ -7,8 +7,10 @@ class User < ActiveRecord::Base
   has_many :asset_returns
   has_many :asset_return_items
   has_many :asset_loans
+  # has_many :item_versions
+  # has_many :items
   belongs_to :department, class_name: "Department", foreign_key: :department_id
-  belongs_to :position, class_name: "Position", foreign_key: :position_id
+  # belongs_to :position, class_name: "Position", foreign_key: :position_id
 
   validates :code, presence: true
   validates :name, format: { with: /\A[a-zA-Z\s]+\z/, message: "only allows letters" }
@@ -16,13 +18,14 @@ class User < ActiveRecord::Base
   # validates  :code, exclusion: {in:->(record) {[record.code]}, message: "Employee ID must be unique" }
 
   validates :code, presence: true, uniqueness: {scope: :code}
+  scope :admins, -> { where(role: 'admin') }
 
   def self.to_csv(users)
     attributes = %w[code name department_name position_name role email]
-    CSV.generate(headers: true) do |csv|
+    CSV.generate(headers: true, quote_char: '"', force_quotes: true) do |csv|
       csv << attributes
       users.includes(:department, :position).each do |user|
-        csv << attributes.map { |attr| user.send(attr) }
+        csv << attributes.map { |attr| "#{user.send(attr)}" }
       end
     end
   end
@@ -33,5 +36,9 @@ class User < ActiveRecord::Base
 
   def position_name
     position&.code_name
+  end
+
+  def admin?
+    role == "admin"
   end
 end

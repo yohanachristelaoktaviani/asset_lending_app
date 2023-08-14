@@ -13,10 +13,10 @@ document.addEventListener('DOMContentLoaded', function() {
     })
     .then(response => response.blob())
     .then(blob => {
-      const url = URL.createObjectURL(blob);
+      const fileName = '<%= session[:csv_filename] || "export_data" %>.csv';
       const link = document.createElement('a');
       link.href = url;
-      link.download = 'export_data.csv';
+      link.download = fileName;
       link.style.display = 'none';
       document.body.appendChild(link);
       link.click();

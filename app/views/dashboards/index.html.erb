@@ -1,0 +1,227 @@
+<% provide(:title, "Dashboard") %>
+<% if current_user&.role == 'admin' %>
+<div id="layoutSidenav_content">
+   <main>
+      <div class="container-fluid px-4">
+         <h1 class="mt-4">Dashboard</h1>
+         <div class="row">
+            <div class="col-lg-6">
+               <div class="card mb-2">
+                  <div class="card-header">
+                     <i class="fas fa-chart-bar me-1"></i>
+                     Loan Frequently per Date
+                  </div>
+                  <div class="card-body mb-4 my-0">
+                     <canvas id="myBarChart" width="100%" height="10">
+                     </canvas>
+                     <%= line_chart AssetLoanItem
+                        .select("date_trunc('day', created_at) as day, count(*) as count")
+                        .group("day")
+                        .order("day")
+                        .inject({}) { |hash, item| hash[item.day.to_date] = item.count; hash } %>
+                  </div>
+                  <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
+               </div>
+            </div>
+            <div class="col-lg-6">
+               <div class="card mb-2">
+                  <div class="card-header">
+                     <i class="fas fa-chart-pie me-1"></i>
+                     Most Loan Items
+                  </div>
+                  <div class="card-body mb-4 my-0">
+                     <canvas id="myPieChart" width="100%" height="10"></canvas>
+                     <%= pie_chart AssetLoanItem
+                        .select('"items"."name" AS item_name, COUNT(*) AS item_count')
+                        .joins(:item)
+                        .group('"items"."name"')
+                        .where('"asset_loan_items"."loan_status" = ?', 'accepted')
+                        .order(item_count: :desc)
+                        .limit(10)
+                        .inject({}) { |hash, item| hash[item.item_name] = item.item_count; hash } %>
+                  </div>
+                  <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
+               </div>
+            </div>
+         </div>
+         <div class="card mb-4">
+            <div class="card-header">
+               <i class="fas fa-table me-1"></i>
+               Selected Available Items
+            </div>
+            <div class="card-body">
+               <div class="table-responsive w-100 mb-1">
+                  <table id="tableReturn" class="table table-bordered table-item w-100 center vcenter my-4">
+                     <thead>
+                        <tr>
+                           <th onclick="sortTable(0)" class="th vcenter text-nowrap">Code<i class="fa fa-fw fa-sort"></i></th>
+                           <th onclick="sortTable(1)" class="th vcenter text-nowrap">Item Name<i class="fa fa-fw fa-sort"></i></th>
+                           <th onclick="sortTable(2)" class="th vcenter text-nowrap">Type<i class="fa fa-fw fa-sort"></i></th>
+                           <th onclick="sortTable(3)" class="th vcenter text-nowrap">Condition<i class="fa fa-fw fa-sort"></i></th>
+                           <th onclick="sortTable(4)" class="th vcenter text-nowrap">Serial Number<i class="fa fa-fw fa-sort"></i></th>
+                           <th onclick="sortTable(5)" class="th vcenter text-nowrap">Status<i class="fa fa-fw fa-sort"></i></th>
+                        </tr>
+                     </thead>
+                     <tbody class="mb-3">
+                        <% @items.each do |item| %>
+                        <tr>
+                           <td class="col-sm-1 text-left"><%= link_to item.code, item_path(item) %></td>
+                           <td class="col-sm-2"><%= item.name %></td>
+                           <td class="col-sm-1"><%= item.item_type %></td>
+                           <td class="col-sm-1"><%= item.condition %></td>
+                           <td class="col-sm-1"><%= item.serial_number %></td>
+                           <td class="col-sm-1"><%= item.status %></td>
+                        </tr>
+                        <% end %>
+                     </tbody>
+                  </table>
+                  <%= paginate @loan_items, :window => 3 %>
+               </div>
+            </div>
+         </div>
+         <div class="card mb-4">
+            <div class="card-header">
+               <i class="fas fa-table me-1"></i>
+               Ongoing Loan Items
+            </div>
+            <div class="card-body">
+               <div class="table-responsive w-100 mb-1">
+                  <table id="tableReturn" class="table table-bordered table-item w-100 center vcenter my-4">
+                     <thead>
+                        <tr>
+                           <th onclick="sortTable(0)" class="th vcenter text-nowrap">Code<i class="fa fa-fw fa-sort"></i></th>
+                           <th onclick="sortTable(1)" class="th vcenter text-nowrap">Item Name<i class="fa fa-fw fa-sort"></i></th>
+                           <th onclick="sortTable(2)" class="th vcenter text-nowrap">Item Code<i class="fa fa-fw fa-sort"></i></th>
+                           <th onclick="sortTable(3)" class="th vcenter text-nowrap">User<i class="fa fa-fw fa-sort"></i></th>
+                           <th onclick="sortTable(4)" class="th vcenter text-nowrap">Loan Date<i class="fa fa-fw fa-sort"></i></th>
+                           <th onclick="sortTable(5)" class="th vcenter text-nowrap">Return Estimation Date<i class="fa fa-fw fa-sort"></i></th>
+                        </tr>
+                     </thead>
+                     <tbody class="mb-3">
+                        <% @loan_items.each do |loan| %>
+                        <tr>
+                           <td class="col-sm-1 text-left"><%= link_to loan.asset_loan.code, asset_loans_item_path(loan) %></td>
+                           <td class="col-sm-2"><%= loan.item.name %></td>
+                           <td class="col-sm-1"><%= loan.item.code %></td>
+                           <td class="col-sm-1"><%= loan.asset_loan.user.name %></td>
+                           <td class="col-sm-1"><%= loan.asset_loan.loan_item_datetime.strftime("%Y-%m-%d %H:%M") %></td>
+                           <td class="col-sm-1"><%= loan.asset_loan.return_estimation_datetime.strftime("%Y-%m-%d %H:%M") %></td>
+                        </tr>
+                        <% end %>
+                     </tbody>
+                  </table>
+                  <%= paginate @loan_items, :window => 3 %>
+               </div>
+            </div>
+         </div>
+         <div class="card mb-4">
+            <div class="card-header">
+               <i class="fas fa-table me-1"></i>
+               The Most Late Return Items Record
+            </div>
+            <div class="card-body">
+               <div class="table-responsive w-100 mb-1">
+                  <table id="myTable" class="table table-bordered table-item w-100 center vcenter my-4">
+                     <thead>
+                        <tr>
+                           <th onclick="sortTable(0)" class="th vcenter text-nowrap">Code<i class="fa fa-fw fa-sort"></i></th>
+                           <th onclick="sortTable(1)" class="th vcenter text-nowrap">Item Name<i class="fa fa-fw fa-sort"></i></th>
+                           <th onclick="sortTable(2)" class="th vcenter text-nowrap">Item Code<i class="fa fa-fw fa-sort"></i></th>
+                           <th onclick="sortTable(3)" class="th vcenter text-nowrap">User<i class="fa fa-fw fa-sort"></i></th>
+                           <th onclick="sortTable(4)" class="th vcenter text-nowrap">Loan Datetime<i class="fa fa-fw fa-sort"></i></th>
+                           <th onclick="sortTable(5)" class="th vcenter text-nowrap">Return Estimation Datetime<i class="fa fa-fw fa-sort"></i></th>
+                           <th onclick="sortTable(6)" class="th vcenter text-nowrap">Actual Return Datetime<i class="fa fa-fw fa-sort"></i></th>
+                           <th onclick="sortTable(7)" class="th vcenter text-nowrap">Return Status<i class="fa fa-fw fa-sort"></i></th>
+                        </tr>
+                     </thead>
+                     <tbody class="mb-3">
+                        <% @return_items.each do |returns| %>
+                        <tr>
+                           <td class="col-sm-1 text-left"><%= link_to returns.asset_return.code, asset_return_item_path(returns) %></td>
+                           <td class="col-sm-2"><%= returns.item.name %></td>
+                           <td class="col-sm-1"><%= returns.item.code %></td>
+                           <td class="col-sm-1"><%= returns.asset_return.user.name %></td>
+                           <td class="col-sm-1"><%= returns.asset_return.asset_loan.loan_item_datetime.strftime("%Y-%m-%d %H:%M") %></td>
+                           <td class="col-sm-1"><%= returns.asset_return.asset_loan.return_estimation_datetime.strftime("%Y-%m-%d %H:%M") %></td>
+                           <td class="col-sm-1"><%= returns.asset_return.actual_return_datetime.strftime("%Y-%m-%d %H:%M:%S") %></td>
+                           <td class="col-sm-1">
+                              <% if returns.asset_return.return_status == "on time" %>
+                              <span class="badge rounded-pill bg-success"><%= returns.asset_return.return_status %></span>
+                              <% elsif returns.asset_return.return_status == "early" %>
+                              <span class="badge rounded-pill bg-info"><%= returns.asset_return.return_status %></span>
+                              <% elsif returns.asset_return.return_status == "late" %>
+                              <span class="badge rounded-pill bg-danger"><%= returns.asset_return.return_status %></span>
+                              <% end %>
+                           </td>
+                        </tr>
+                        <% end %>
+                     </tbody>
+                  </table>
+                  <%= paginate @return_items, :window => 3 %>
+               </div>
+            </div>
+         </div>
+      </div>
+   </main>
+</div>
+<% elsif current_user&.role == 'user' %>
+<div id="layoutSidenav_content">
+   <main>
+      <div class="container-fluid px-4">
+         <h1 class="mt-4">Dashboard</h1>
+         <div class="card mb-4">
+            <div class="card-header">
+               <i class="fas fa-table me-1"></i>
+               Loan Return Items Record
+            </div>
+            <div class="card-body">
+               <div class="table-responsive w-100 mb-1">
+                  <table id="myTable" class="table table-bordered table-item w-100 center vcenter my-4">
+                     <thead>
+                        <tr>
+                           <th onclick="sortTable(0)" class="th vcenter text-nowrap">Loan Code<i class="fa fa-fw fa-sort"></i></th>
+                           <th onclick="sortTable(0)" class="th vcenter text-nowrap">Return Code<i class="fa fa-fw fa-sort"></i></th>
+                           <th onclick="sortTable(1)" class="th vcenter text-nowrap">Item Name<i class="fa fa-fw fa-sort"></i></th>
+                           <th onclick="sortTable(2)" class="th vcenter text-nowrap">Item Code<i class="fa fa-fw fa-sort"></i></th>
+                           <th onclick="sortTable(4)" class="th vcenter text-nowrap">Loan Datetime<i class="fa fa-fw fa-sort"></i></th>
+                           <th onclick="sortTable(5)" class="th vcenter text-nowrap">Return Estimation Datetime<i class="fa fa-fw fa-sort"></i></th>
+                           <th onclick="sortTable(6)" class="th vcenter text-nowrap">Actual Return Datetime<i class="fa fa-fw fa-sort"></i></th>
+                           <th onclick="sortTable(7)" class="th vcenter text-nowrap">Return Status<i class="fa fa-fw fa-sort"></i></th>
+                        </tr>
+                     </thead>
+                     <tbody class="mb-3">
+                        <% @return_and_loan.each do |returns| %>
+                        <tr>
+                           <td class="col-sm-1 text-left"><%= link_to returns.asset_return.asset_loan.code, user_asset_loan_path(returns.asset_return.asset_loan.id) %></td>
+                           <td class="col-sm-1 text-left"><%= returns.asset_return.code %></td>
+                           <td class="col-sm-2"><%= returns.item.name %></td>
+                           <td class="col-sm-1"><%= returns.item.code %></td>
+                           <td class="col-sm-1"><%= returns.asset_return.asset_loan.loan_item_datetime.strftime("%Y-%m-%d %H:%M") %></td>
+                           <td class="col-sm-1"><%= returns.asset_return.asset_loan.return_estimation_datetime.strftime("%Y-%m-%d %H:%M") %></td>
+                           <td class="col-sm-1"><%= returns.asset_return.actual_return_datetime.strftime("%Y-%m-%d %H:%M:%S") %></td>
+                           <td class="col-sm-1">
+                              <% if returns.asset_return.return_status == "on time" %>
+                              <span class="badge rounded-pill bg-success"><%= returns.asset_return.return_status %></span>
+                              <% elsif returns.asset_return.return_status == "early" %>
+                              <span class="badge rounded-pill bg-info"><%= returns.asset_return.return_status %></span>
+                              <% elsif returns.asset_return.return_status == "late" %>
+                              <span class="badge rounded-pill bg-danger"><%= returns.asset_return.return_status %></span>
+                              <% end %>
+                           </td>
+                        </tr>
+                        <% end %>
+                     </tbody>
+                  </table>
+                  <%= paginate @return_items, :window => 3 %>
+               </div>
+            </div>
+         </div>
+      </div>
+   </main>
+</div>
+<% end %>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+<script src="js/scripts.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
+<script src="assets/demo/chart-area-demo.js"></script>
+<script src="assets/demo/chart-bar-demo.js"></script>

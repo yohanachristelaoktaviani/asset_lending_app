@@ -14,15 +14,36 @@
   <div class="font-edit">
     <h2>Show Loan</h2>
     <% if @loan_item.asset_loan_items.pluck(:loan_status).all? { |status| status == "accepted"} %>
-      <% @loan_item_id = @loan_item.id %>
-      <%= link_to "Return", new_user_asset_return_path(loan_item_id: @loan_item_id), :controller => "user_asset_returns", :action => "new", :id => @loan_item.id , method: 'get', class: "btn btn-lg btn-primary"%>
+      <% if @is_returned.present? %>
+        <br>
+      <% else %>
+        <% @loan_item_id = @loan_item.id %>
+        <%= link_to new_user_asset_return_path(loan_item_id: @loan_item_id), :controller => "user_asset_returns", :action => "new", :id => @loan_item.id , method: 'get', class: "button5 btn btn-primary", style: "width: 15%;" do %>
+          <span class="fa-solid fa-arrow-right-arrow-left" aria-hidden="true"></span>
+          Return
+        <% end %>
+        
+      <% end %>
     <% elsif @loan_item.asset_loan_items.pluck(:loan_status).all? { |status| status == "decline"} %>
 
-    <% elsif @loan_item.asset_loan_items.pluck(:loan_status).all? { |status| status == "waiting"} %>
-    <% @loan_item_id = @loan_item.id %>
-      <%= link_to "Edit Loan", edit_user_asset_loan_path(@loan_item.id), method: 'get', class: "btn btn-lg btn-warning"%>
+    <% elsif @loan_item.asset_loan_items.pluck(:loan_status).any? { |status| status == "waiting"} %>
+      <% @loan_item_id = @loan_item.id %>
+      <%= link_to edit_user_asset_loan_path(@loan_item.id), method: 'get', class: "btn btn-lg btn-warning" do %>
+         <span class="fa-solid fa-pen-to-square" aria-hidden="true"></span>
+          Edit
+        <% end %>
+      <% if @loan_item.asset_loan_items.pluck(:loan_status).any? { |status| status == "accepted"} %>
+        <% if @is_returned.present? %>
+          
+        <% else %>
+          <% @loan_item_id = @loan_item.id %>
+          <%= link_to new_user_asset_return_path(loan_item_id: @loan_item_id), :controller => "user_asset_returns", :action => "new", :id => @loan_item.id , method: 'get', class: "btn btn-lg btn-primary" do %>
+            <span class="fa-solid fa-arrow-right-arrow-left" aria-hidden="true"></span>
+            Return
+          <% end %>
+        <% end %>
+      <% end %>
     <% end %>
-
   </div>
   <table class="table tablestat w-100">
     <tr>
@@ -31,14 +52,14 @@
       <td><%= @loan_item.code %></td>
     </tr>
     <tr>
-      <th>Merk</th>
+      <th>Loan Item Datetime</th>
       <td>:</td>
-      <td><%= @loan_item.loan_item_datetime %></td>
+      <td><%= @loan_item.loan_item_datetime.strftime("%Y-%m-%d %H:%M:%S") %></td>
     </tr>
     <tr>
       <th>Return Estimation Datetime</th>
       <td>:</td>
-      <td><%= @loan_item.return_estimation_datetime %></td>
+      <td><%= @loan_item.return_estimation_datetime.strftime("%Y-%m-%d %H:%M:%S") %></td>
     </tr>
   </table>
 
@@ -51,7 +72,6 @@
       <% @index = 0 %>
       <% @loan_item.asset_loan_items.each do |asset_loan_item| %>
         <tr>
-          <td><%= image_tag asset_loan_item.item.image, class:"imagee" %></td>
           <td class="font-user-loan"><%= asset_loan_item.item.name%></td>
           <td>
             <% if asset_loan_item.loan_status == "accepted" %>

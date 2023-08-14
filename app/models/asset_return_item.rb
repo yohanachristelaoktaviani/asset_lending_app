@@ -22,7 +22,7 @@ class AssetReturnItem < ActiveRecord::Base
   def self.generate_csv(return_items)
     attributes = %w[return_id item_name item_code user_name actual_return_date actual_item_condition return_status admin_name status]
 
-    CSV.generate(headers: true) do |csv|
+    CSV.generate(headers: true, quote_char: '"', force_quotes: true) do |csv|
       csv << attributes
 
       return_items.each do |return_item|

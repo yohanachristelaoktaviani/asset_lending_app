@@ -10,36 +10,47 @@
   </div>
 <% end %>
 
-<div class="form2">
-  <div class="font-edit">
-    <h2>New Loan</h2>
+<div id="wrap">
+<div id="main" class="container clear-top">
+<div class="form4">
+  <div class="font-edit font-left">
+    <h2 class="text-left mx-3">New Loan</h2>
   </div>
   <%= form_for @loan_item do |form| %>
     <div class="font-user">
       <hr>
       <p>
         <%= form.label :code, class:"tlabel" %>
-        <%= form.text_field :code, value: @loan_item.code, class:"textbox2", readonly: true, disabled: true %>
+        <%= form.text_field :code, value: @loan_item.code, class:"textbox6", readonly: true, disabled: true %>
       </p>
       <p>
         <%= form.label :loan_item_datetime, class:"tlabel" %>
-        <%= form.text_field :loan_item_datetime, class:"textbox2", id:"datetime" %>
+        <%= form.text_field :loan_item_datetime, class:"textbox6", id:"datetime" %>
       </p>
       <p>
         <%= form.label :return_estimation_datetime, class:"tlabel" %>
-        <%= form.text_field :return_estimation_datetime, class:"textbox2", id:"datetime" %>
+        <%= form.text_field :return_estimation_datetime, class:"textbox6", id:"datetime" %>
       </p>
       <br>
         <p>
           <%= form.label :necessary, class:"tlabel" %>
-          <%= form.text_field :necessary, class:"textbox2"%>
+          <%= form.text_field :necessary, class:"textbox6"%>
         </p>
-
+        <%  if @current_user.role == "admin" %>
+        <p>
+          <%= form.label :user_id, class:"tlabel" %>
+          <%= form.select :user_id, @users.map { |user| [user.name, user.id] }, {}, class:"textbox7" %>
+        </p>
+        <% else %>
+        <% form.hidden_field :user_id, value: @current_user.id %>
+        <% end %>
     </div>
 
-    <h2>Items</h2>
+    <div class="font-edit font-left mb-4">
+      <h2 class="text-left">Items</h2>
+    </div>
     <hr>
-    <table class="table table-bordered table-striped table-hover w-100 mb-0">
+    <table class="table table-loan-item mb-0">
       <thead>
       </thead>
       <tbody id="asset_loan_items">
@@ -47,14 +58,17 @@
 
         <% end %>
         <p class="links">
-           <%= link_to_add_nested(form, :asset_loan_items, '#asset_loan_items', link_text: 'Add Item', link_classes: 'btn btn-success btn-lg') %>
+           <%= link_to_add_nested(form, :asset_loan_items, '#asset_loan_items', link_text: 'Add Item', link_classes: 'btn btn-success btn-lg button15') %>
         </p>
       </tbody>
     </table>
     <p>
-      <%= form.submit "Submit", class: "btn-add-skill btn btn-primary btn-lg w-50", style:"margin-top:20px" %>
+      <%= form.submit "CREATE", class: "btn-add-skill btn btn-primary btn-lg button4 mt-2 mb-4" %>
     </p>
 </div>
+</div>
+</div>
+
 <script>
   $(function() {
     $('input[id="datetime"]').daterangepicker({
@@ -63,7 +77,7 @@
       "timePicker24Hour": true,
       "minDate": moment(),
       locale: {
-        format: 'MM/DD/YYYY kk:mm'
+        format: 'YYYY-MM-DD kk:mm'
       }
     }, function(start, end, label) {
       console.log('New date range selected: ' + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD'));

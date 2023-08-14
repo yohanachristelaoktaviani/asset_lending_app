@@ -3,6 +3,7 @@ class UsersController < ApplicationController
   require 'date'
 
   before_action :authenticate_user!, except: [:main]
+  before_action :authenticate_admin!, only: [:new, :create, :index, :show, :edit, :update]
 
   # layout :users_layout
 
@@ -10,7 +11,7 @@ class UsersController < ApplicationController
     @department = Department.all
     @position = Position.all
     @user = User.new
-    @user.code = generate_employee_id
+    # @user.code = generate_employee_id
   end
 
   def create
@@ -48,7 +49,7 @@ class UsersController < ApplicationController
   def edit
     @user = User.find(params[:id])
     @department = Department.all
-    @position = Position.all
+    # @position = Position.all
   end
 
   def update
@@ -57,9 +58,18 @@ class UsersController < ApplicationController
       params[:user].delete(:password)
       params[:user].delete(:password_confirmation)
     end
-    @user.update(user_params)
-    flash[:success] = "User was succesfully updated"
-    redirect_to users_path
+    # @user.update(user_params)
+    # flash[:success] = "User was succesfully updated"
+    # redirect_to users_path
+    if @user.update(user_params)
+      flash[:success] = "User was succesfully updated"
+      redirect_to users_path
+    else
+      puts 'ERROR ', @user.errors.full_messages
+      flash[:errors] = @user.errors.full_messages
+      redirect_to new_user_path
+    end
+
   end
 
   def show
@@ -79,7 +89,7 @@ class UsersController < ApplicationController
   end
 
   def export_user
-    @users = User.all.limit(100)
+    @users = User.all
 
     respond_to do |format|
       format.html
@@ -90,11 +100,67 @@ class UsersController < ApplicationController
     end
   end
 
+  def reset_password_header
+    @user = User.find(current_user.id)
+    ActiveRecord::Base.transaction do
+      if @user.role == "admin"
+        @user.password =  Rails.application.credentials.default_pass[:admin]
+      elsif @user.role == "user"
+        @user.password =  Rails.application.credentials.default_pass[:user]
+      end
+      if @user.save!
+        flash[:success] = "Password reseted sucessfully"
+        redirect_to user_session_path
+      else
+        flash[:errors] = @user.errors.full_messages
+        return
+        raise ActiveRecord::Rollback
+      end
+    end
+  end
+
+  def reset_password
+    @user = User.find(params[:id])
+    if @user.role == "admin"
+      @user.password =  Rails.application.credentials.default_pass[:admin]
+    elsif @user.role == "user"
+      @user.password =  Rails.application.credentials.default_pass[:user]
+    end
+    if @user.save
+      flash[:success] = "Password reseted sucessfully"
+      redirect_to users_path
+    else
+      flash[:errors] = @user.errors.full_messages
+      return
+    end
+  end
+
+
+  def change_password_form
+    @user = current_user
+  end
+
+  def update_password
+    @user = User.find_for_authentication(:id => current_user.id)
+    if @user.valid_password?(params[:user][:current_password])
+      if params[:user][:current_password] == params[:user][:new_password]
+        flash[:errors] = "New password cant be the same as the current"
+        return redirect_to change_password_path
+      end
+      @user.update(password: params[:user][:new_password])
+      flash[:success] = "Password reseted sucessfully"
+      return redirect_to user_session_path
+    else
+      flash[:errors] = "You entered wrong current password"
+      return redirect_to change_password_path
+    end
+  end
+
 
   private
 
   def user_params
-    params.require(:user).permit(:code, :name, :email, :password, :password_confirmation, :department_id, :position_id, :role)
+    params.require(:user).permit(:code, :name, :email, :password, :password_confirmation, :department_id, :position, :role)
   end
 
   def users_layout
@@ -113,6 +179,12 @@ class UsersController < ApplicationController
       "UKI" + next_numeric_part.to_s.rjust(3, '0')
     end
   end
+
+private
+
+def authenticate_admin!
+  redirect_to dashboards_path unless current_user.role == "admin"
+end
 
 
 end

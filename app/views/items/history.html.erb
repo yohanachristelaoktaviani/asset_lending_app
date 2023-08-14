@@ -1,0 +1,31 @@
+<% provide(:title, "History Item") %>
+<div class="form">
+<div class="container8 mb-5">
+<h2>History for <%= @item.name %></h2>
+
+<div class="table-responsive mb-5">
+<table class="table table-bordered center table-item table-responsive my-0 ">
+  <thead>
+    <tr>
+      <th>No.</th>
+      <th>Changed at</th>
+      <th>Action</th>
+      <th>Changed by Admin</th>
+
+    </tr>
+  </thead>
+  <tbody>
+    <% @versions.each_with_index do |version, index| %>
+      <tr>
+        <td><%= index + 1 %></td>
+        <td><%= version.created_at.localtime.strftime("%Y-%m-%d %H:%M:%S") %></td>
+        <td><%= version.event %></td>
+        <td><%= version.whodunnit ? User.find(version.whodunnit).name : ""%></td>
+
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+</div>
+</div>
+</div>

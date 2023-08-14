@@ -3,7 +3,7 @@
   <tr class="fields">
     <td>
       <%= form.hidden_field :loan_status, value: "waiting" %>
-      <%= form.collection_select :item_id, @items, :id, :name, { prompt: '--Select--' } %>
+      <%= form.collection_select :item_id, @items, :id, Proc.new { |item| "#{item.code} - #{item.name}" }, { prompt: '--Select--' },  class: "w-100" %>
     </td>
     <td class="text-center">
         <%= link_to_remove_nested(form, link_classes: 'btn btn-danger btn-lg', fields_wrapper_selector: '.fields') do %>
@@ -33,7 +33,7 @@
               <i class="fa-solid fa-trash"></i>
             <% end %>
           <% elsif @loan_item.asset_loan_items[@index].loan_status == "accepted" %>
-            <%= button_tag class: 'btn btn-danger btn-lg', disabled: true do %>
+            <%= button_tag class: 'btn btn-danger btn-lg font-icon', disabled: true do %>
               <i class="fa-solid fa-trash"></i>
             <% end %>
           <% end %>

@@ -12,7 +12,7 @@ class AssetLoanItem < ActiveRecord::Base
   def self.generate_csv(loan_items)
     attributes = %w[loan_id item_name item_code user_name loan_date return_estimation_date item_condition necessary admin_name loan_status evidence]
 
-    CSV.generate(headers: true) do |csv|
+    CSV.generate(headers: true, quote_char: '"', force_quotes: true) do |csv|
       csv << attributes
 
       loan_items.each do |loan_item|
@@ -25,12 +25,15 @@ class AssetLoanItem < ActiveRecord::Base
           loan_item.asset_loan.return_estimation_datetime,
           loan_item.item.condition,
           loan_item.asset_loan.necessary,
-          loan_item.admin.name,
+          loan_item.admin&.name,
           loan_item.loan_status,
           loan_item.evidence
         ]
       end
     end
   end
+
+
+
 
 end

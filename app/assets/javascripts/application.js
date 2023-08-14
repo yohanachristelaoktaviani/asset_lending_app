@@ -6,3 +6,5 @@
 //= require_tree
 //= require activestorage
 //= require vanilla_nested
+//= require chartkick
+//= require Chart.bundle

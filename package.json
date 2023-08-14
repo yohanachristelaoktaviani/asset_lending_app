@@ -1,5 +1,7 @@
 {
   "dependencies": {
-    "@popperjs/core": "2.0.0-alpha.1"
+    "@popperjs/core": "2.0.0-alpha.1",
+    "chart.js": "^4.3.3",
+    "chartkick": "^5.0.1"
   }
 }

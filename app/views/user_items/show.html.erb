@@ -2,18 +2,7 @@
 
   <h1>Item Detail</h1>
 
-  <div class="container8">
-  <div class="container-detail-item">
-  <div class="image-container mt-4">
-    <% if @user_item.image.attached? %>
-      <%= image_tag @user_item.image, class:"imageee"%>
-    <% else %>
-      <%= image_tag 'unknown-item.jpg', class:"imageee" %>
-    <% end %>
-    </div>
-
-  <div class="container5 mt-4">
-    <h3 class="font-item text-nowrap"><%= @user_item.name.upcase %></h3>
+  <div class="container10 mt-4 mb-5">
       <table class="table tablestat">
           <tr>
             <th>Code</th>
@@ -21,14 +10,14 @@
             <td><%= @user_item.code%></td>
           </tr>
           <tr>
-            <th>Code</th>
+            <th>Name</th>
             <td>:</td>
-            <td><%= @user_item.code%></td>
+            <td><%= @user_item.name%></td>
           </tr>
           <tr>
-            <th>Merk</th>
+            <th>Type</th>
             <td>:</td>
-            <td><%= @user_item.merk%></td>
+            <td><%= @user_item.item_type%></td>
           </tr>
           <tr>
             <th>Condition</th>
@@ -44,3 +33,4 @@
     </div>
   </div>
 </div>
+

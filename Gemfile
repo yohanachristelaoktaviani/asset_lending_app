@@ -27,6 +27,11 @@ gem 'vanilla_nested'
 
 gem 'datetimepicker-rails', github: 'zpaulovics/datetimepicker-rails', branch: 'master', submodules: true
 
+gem 'paper_trail'
+
+gem 'chartkick'
+
+gem 'groupdate'
 
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
 gem 'rails', '~> 6.1.4', '>= 6.1.4.6'
