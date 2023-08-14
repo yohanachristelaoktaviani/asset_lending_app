@@ -17,7 +17,7 @@
   <% end %>
 
 
-  <div class="table-responsive w-100 mb-5">
+<div class="table-responsive w-100 mb-5">
 <table class="table borderless w-100 mb-5">
   <tr>
   <td><%= button_to new_user_asset_loan_path, method: 'get', class: "button2 btn btn-primary", style: "width: 50%;" do %>
@@ -63,10 +63,12 @@
           <% rowspan = assets.size %>
           <% assets.each_with_index do |asset, index| %>
         <tr>
-            <td style="text-align:left"><%= link_to loan.asset_loan.code, user_asset_loan_path(loan.asset_loan.id) %></td>
-            <td><%= loan.item.name %></td>
-            <td><%= loan.asset_loan.loan_item_datetime.strftime("%Y-%m-%d %H:%M:%S") %></td>
-            <td><%= loan.asset_loan.return_estimation_datetime.strftime("%Y-%m-%d %H:%M:%S") %></td>
+            <% if index == 0 %>
+              <td rowspan="<%= rowspan %>"><%= link_to asset.asset_loan.code, user_asset_loan_path(asset.asset_loan.id) %></td>
+            <% end %>
+            <td><%= asset.item.name %></td>
+            <td><%= asset.asset_loan.loan_item_datetime.strftime("%Y-%m-%d %H:%M:%S") %></td>
+            <td><%= asset.asset_loan.return_estimation_datetime.strftime("%Y-%m-%d %H:%M:%S") %></td>
             <td>
               <% actual_return_datetime = AssetReturn.where(asset_loan_id: asset.asset_loan_id).pluck(:actual_return_datetime).first %>
               <%= actual_return_datetime.strftime("%Y-%m-%d %H:%M:%S") if actual_return_datetime %>
@@ -79,24 +81,24 @@
                 <span class="badge rounded-pill bg-danger"><%= asset.item.condition %></span>
             <% end %>
             </td>
-            <td><%= loan.asset_loan.necessary %></td>
+            <td><%= asset.asset_loan.necessary %></td>
             <td>
-              <%= if loan.admin.present?
-                    loan.admin.name
+              <%= if asset.admin.present?
+                    asset.admin.name
                   else
                     ""
                   end
               %>
             </td>
             <td>
-              <% if loan.loan_status == "accepted" %>
-                  <span class="badge rounded-pill bg-success"><%= loan.loan_status %></span>
-                <% elsif loan.loan_status == "decline" %>
-                  <span class="badge rounded-pill bg-danger"><%= loan.loan_status %></span>
-                <% elsif loan.loan_status == "waiting" %>
-                  <span class="badge rounded-pill bg-warning"><%= loan.loan_status %></span>
-                <% elsif loan.loan_status == "cancel" %>
-                  <span class="badge rounded-pill bg-secondary"><%= loan.loan_status %></span>
+              <% if asset.loan_status == "accepted" %>
+                  <span class="badge rounded-pill bg-success"><%= asset.loan_status %></span>
+                <% elsif asset.loan_status == "decline" %>
+                  <span class="badge rounded-pill bg-danger"><%= asset.loan_status %></span>
+                <% elsif asset.loan_status == "waiting" %>
+                  <span class="badge rounded-pill bg-warning"><%= asset.loan_status %></span>
+                <% elsif asset.loan_status == "cancel" %>
+                  <span class="badge rounded-pill bg-secondary"><%= asset.loan_status %></span>
                 <% end %>
             </td>
             <td><%= asset.evidence %></td>
@@ -111,6 +113,7 @@
               <% end %>
             </td>
         </tr>
+      <% end %>
       <% end %>
     </tbody>
   </table>
