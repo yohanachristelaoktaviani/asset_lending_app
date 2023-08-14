@@ -23,7 +23,7 @@
           <%= form.collection_select :item_id, @items, :id, :name, { prompt: '--Select--' }, disabled: true %>
         <% elsif @loan_item.asset_loan_items[@index].loan_status == "waiting" %>
           <%= form.hidden_field :loan_status, value: "waiting" %>
-          <%= form.collection_select :item_id, @items, :id, :name, { prompt: '--Select--' } %>
+          <%= form.collection_select :item_id, @items, :id, Proc.new { |item| "#{item.code} - #{item.name}" }, { prompt: '--Select--' },  class: "w-100" %>
         <% end %>
       </td>
       <td class="text-center">
@@ -33,7 +33,7 @@
               <i class="fa-solid fa-trash"></i>
             <% end %>
           <% elsif @loan_item.asset_loan_items[@index].loan_status == "accepted" %>
-            <%= button_tag class: 'btn btn-danger btn-lg font-icon', disabled: true do %>
+            <%= button_tag class: 'btn btn-danger btn-lg', disabled: true do %>
               <i class="fa-solid fa-trash"></i>
             <% end %>
           <% end %>
@@ -46,5 +46,5 @@
       </td>
     </tr>
   <% end %>
-
 <% end %>
+
